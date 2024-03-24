@@ -1,0 +1,17 @@
+name: 'install-juliaup'
+description: 'Install Juliaup, add it to the PATH, and use it to install Julia'
+author: 'julia-actions organization, contributors'
+inputs:
+  julia-version:
+    description: 'The Julia version to install. Example: 1.2.3'
+    required: true
+  # juliaup-version:
+  #   description: 'The Julia version to install. Example: 1.2.3. If not provided, defaults to the latest available Juliaup version.'
+  #   required: false
+  #   default: ''
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+branding:
+  icon: 'download'
+  color: 'green'
