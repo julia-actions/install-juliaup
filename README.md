@@ -35,3 +35,11 @@ If you want alphas for the next upcoming release:
 ```
 
 In general, if `juliaup add FOO` would have been a valid command on your local machine, then `FOO` is valid value for the `julia-version` input to this action. See the [Juliaup README](https://github.com/JuliaLang/juliaup/blob/main/README.md#using-juliaup) for more examples.
+
+## Private internals
+
+The `juliaup-version` input is a private internal and is not part of the public API of this action. Therefore, in a future non-breaking (minor) release of this action, we are allowed to:
+1. Rename the input.
+2. Remove the input altogether.
+3. Change the default value of the input.
+4. Make any other changes to the behavior of the input.
