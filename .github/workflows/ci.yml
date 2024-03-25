@@ -248,4 +248,4 @@ jobs:
         run: |
           cmd = Base.julia_cmd()
           julia_path = cmd.exec[1]
-          @info "" julia_path
+          @info "" julia_path Base.VERSION
