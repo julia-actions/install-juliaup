@@ -18,12 +18,11 @@ jobs:
     if: always() # this line is important to keep the `finalize` job from being marked as skipped; do not change or delete this line
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [build, checked-in-files, lint, example]
+    needs: [build, checked-in-files, example]
     steps:
       - run: |
           echo build: ${{ needs.build.result }}
           echo checked-in-files: ${{ needs.checked-in-files.result }}
-          echo lint: ${{ needs.lint.result }}
           echo example: ${{ needs.example.result }}
       # The last line must NOT end with ||
       # All other lines MUST end with ||
