@@ -40,8 +40,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
-          - macos-latest
     steps:
       ### Check out the repo:
       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
@@ -87,8 +85,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
-          - macos-latest
     steps:
       ### Check out the repo:
       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
@@ -215,9 +211,6 @@ jobs:
         os:
           - ubuntu-latest
           - windows-latest
-          - macos-latest
-          - macos-11 # Intel
-          - macos-12 # Intel
           - macos-13 # Intel
           - macos-14 # Apple Silicon
     steps:
