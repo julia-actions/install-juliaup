@@ -10,10 +10,18 @@ When you use this action, it will do three things:
 
 ## Example usage
 
-In most cases, this will be sufficient:
+To install the latest stable Julia v1:
 
 ```yaml
 - uses: julia-actions/install-juliaup@latest
   with:
     julia-version: '1'
+```
+
+To install a specific Julia version:
+
+```yaml
+- uses: julia-actions/install-juliaup@latest
+  with:
+    julia-version: '1.10.2'
 ```
