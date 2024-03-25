@@ -18,12 +18,11 @@ jobs:
     if: always() # this line is important to keep the `finalize` job from being marked as skipped; do not change or delete this line
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [build, checked-in-files, lint, example]
+    needs: [build, checked-in-files, example]
     steps:
       - run: |
           echo build: ${{ needs.build.result }}
           echo checked-in-files: ${{ needs.checked-in-files.result }}
-          echo lint: ${{ needs.lint.result }}
           echo example: ${{ needs.example.result }}
       # The last line must NOT end with ||
       # All other lines MUST end with ||
@@ -125,31 +124,30 @@ jobs:
       - run: git --no-pager status
       - run: git --no-pager diff
       - run: julia ./bin/check_uncommitted_changes.jl
-  lint:
-    if: false # TODO: delete this line
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-        ### Check out the repo:
-        - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
-          with:
-            persist-credentials: false
-        ### Install the deps
-        # Unix (non-Windows):
-        - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-          if: runner.os != 'Windows'
-        - run: make unix-asdf-install
-          if: runner.os != 'Windows'
-        - name: Print the NodeJS version (for debugging)
-          run: |
-            which -a node
-            node --version
-            which -a npm
-            npm --version
-        ### Lint:
-        - run: make check-lint
+  # lint:
+  #   timeout-minutes: 30
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #       ### Check out the repo:
+  #       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+  #         with:
+  #           persist-credentials: false
+  #       ### Install the deps
+  #       # Unix (non-Windows):
+  #       - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+  #         if: runner.os != 'Windows'
+  #       - run: make unix-asdf-install
+  #         if: runner.os != 'Windows'
+  #       - name: Print the NodeJS version (for debugging)
+  #         run: |
+  #           which -a node
+  #           node --version
+  #           which -a npm
+  #           npm --version
+  #       ### Lint:
+  #       - run: make check-lint
   # experiment-windows-1-winget: # TODO: delete this job
   #   timeout-minutes: 30
   #   runs-on: windows-latest
