@@ -44,7 +44,7 @@ jobs:
           - macos-latest
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
         with:
           persist-credentials: false
       ### Cleanall:
@@ -91,7 +91,7 @@ jobs:
           - macos-latest
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
         with:
           persist-credentials: false
       ### Cleanall:
@@ -137,7 +137,7 @@ jobs:
       fail-fast: false
     steps:
         ### Check out the repo:
-        - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
           with:
             persist-credentials: false
         ### Install the deps
@@ -221,7 +221,7 @@ jobs:
           - macos-13 # Intel
           - macos-14 # Apple Silicon
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
         with:
           persist-credentials: false
       - name: '[before] Print some output for debugging purposes [allow this step to fail]'
