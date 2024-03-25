@@ -25,3 +25,13 @@ To install a specific Julia version:
   with:
     julia-version: '1.10.2'
 ```
+
+If you want alphas for the next upcoming release:
+
+```yaml
+- uses: julia-actions/install-juliaup@latest
+  with:
+    julia-version: 'alpha'
+```
+
+In general, if `juliaup add FOO` would have been a valid command on your local machine, then `FOO` is valid value for the `julia-version` input to this action.
