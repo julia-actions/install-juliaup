@@ -9,7 +9,7 @@ cd install-juliaup
 
 ## 2. Install NodeJS
 
-### Unix
+### Unix, using `asdf` (recommended, but not required)
 
 First, make sure that you have installed [`asdf`](https://asdf-vm.com/) on your local machine.
 
@@ -20,6 +20,12 @@ make unix-asdf-install
 ```
 
 This will use `asdf` to install the correct version of NodeJS.
+
+### Unix, but not using `asdf`
+
+Instead of using `asdf`, you can instead choose to install NodeJS manually.
+
+First, check the `.tool-versions` file in this repo, and see what version of NodeJS you need. Then, install that same version of NodejS on your local machine.
 
 ### Windows
 
