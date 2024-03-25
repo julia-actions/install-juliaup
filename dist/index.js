@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 5933:
+/***/ 4792:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -30,48 +30,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports._windows_install_juliaup = void 0;
-// npm packages that are part of the GitHub Actions toolkit
-const core = __importStar(__nccwpck_require__(2186));
-const tc = __importStar(__nccwpck_require__(7784));
-// Other npm packages
-const retry = __nccwpck_require__(3415);
-// TODO: get the correct value automatically:
-async function _get_latest_juliaup_version() {
-    return '1.14.7';
-}
-// Windows: Install Juliaup.
-async function _windows_install_juliaup() {
-    const juliaup_version = await _get_latest_juliaup_version();
-    const platform = 'x86_64-pc-windows';
-    const tarball_download_url = `https://github.com/JuliaLang/juliaup/releases/download/v${juliaup_version}/juliaup-${juliaup_version}-${platform}-gnu-portable.tar.gz`;
-    core.info(`We will download Juliaup from: ${tarball_download_url}`);
-    // Taken from: https://github.com/julia-actions/setup-julia/blob/e9d953d306cac42c94058f27c6564ec50d97d913/src/installer.ts#L216-L225
-    //
-    // Occasionally the connection is reset for unknown reasons.
-    // In those cases, retry the download.
-    const tarball_download_path = await retry(async (bail) => {
-        return await tc.downloadTool(tarball_download_url);
-    }, {
-        retries: 5,
-        onRetry: (err) => {
-            core.info(`Download of ${tarball_download_url} failed, trying again. Error: ${err}`);
-        }
-    });
-    // Extract the Juliaup tarball to a temp directory:
-    const extracted_download_path = await tc.extractTar(tarball_download_path);
-    // Copy Juliaup from the temp directory to the GitHub Tool Cache:
-    const arch = process.env.RUNNER_ARCH;
-    const juliaup = await tc.cacheDir(extracted_download_path, 'juliaup', juliaup_version, arch);
-    throw new Error(`TODO: finish implementing this`);
-    return;
-}
-exports._windows_install_juliaup = _windows_install_juliaup;
-//# sourceMappingURL=download.js.map
+const start_here = __importStar(__nccwpck_require__(2963));
+start_here.main_function_run_me();
+//# sourceMappingURL=entrypoint.js.map
 
 /***/ }),
 
-/***/ 8657:
+/***/ 6180:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -132,11 +97,11 @@ function isNonEmptyString(str) {
     return result;
 }
 exports.isNonEmptyString = isNonEmptyString;
-//# sourceMappingURL=input.js.map
+//# sourceMappingURL=inputs.js.map
 
 /***/ }),
 
-/***/ 6273:
+/***/ 2441:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -165,167 +130,227 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.main = void 0;
+exports.install_desired_julia_version = void 0;
+// npm packages that are part of the GitHub Actions toolkit
+// import * as core from '@actions/core'
+const exec = __importStar(__nccwpck_require__(1514));
+// Our own source code files
+const inputs = __importStar(__nccwpck_require__(6180));
+const platform = __importStar(__nccwpck_require__(9238));
+async function install_desired_julia_version(info) {
+    // Install the Julia desired version, and set it as the default.
+    const julia_version = inputs.get_julia_version_input();
+    const juliaup = platform.get_juliaup(info);
+    await exec.exec(juliaup, ['add', `${julia_version}`]);
+    await exec.exec(juliaup, ['default', `${julia_version}`]);
+    return;
+}
+exports.install_desired_julia_version = install_desired_julia_version;
+//# sourceMappingURL=julia.js.map
+
+/***/ }),
+
+/***/ 2635:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ensure_juliaup_is_installed = void 0;
 // npm packages that are part of the GitHub Actions toolkit
 const core = __importStar(__nccwpck_require__(2186));
-const exec = __importStar(__nccwpck_require__(1514));
+// import * as exec from '@actions/exec'
+const tc = __importStar(__nccwpck_require__(7784));
 // Other npm packages
-const which = __importStar(__nccwpck_require__(6143));
+const retry = __nccwpck_require__(3415);
+// Our own source code files
+const inputs = __importStar(__nccwpck_require__(6180));
+const platform = __importStar(__nccwpck_require__(9238));
+async function ensure_juliaup_is_installed() {
+    // 1. Determine which version of Juliaup to use.
+    const juliaup_version = await _get_latest_juliaup_version();
+    let juliaup_dir;
+    // 2. Search the toolcache to see if the desired version of Juliaup already exists.
+    const arch = process.arch;
+    const tool_name = 'juliaup';
+    juliaup_dir = tc.find(tool_name, juliaup_version, arch);
+    // await _install_juliaup()
+    // 3. If it wasn't found in the toolcache, we have to download it ourselves.
+    if (!juliaup_dir) {
+        // Download and extract Juliaup to a
+        const extracted_download_path = await download_and_extract_juliaup_to_temp_dir(juliaup_version);
+        juliaup_dir = await tc.cacheDir(extracted_download_path, tool_name, juliaup_version, arch);
+    }
+    else {
+        // If we fund the desired version of Juliaup in the toolcache,
+        // then we use that.
+        core.info(`Using tool-cached version of Juliaup: ${juliaup_dir}`);
+    }
+    // 4. Add Juliaup (and thus also Julialauncher) to the PATH.
+    await core.addPath(juliaup_dir);
+    const info = {
+        juliaup_dir
+    };
+    return info;
+}
+exports.ensure_juliaup_is_installed = ensure_juliaup_is_installed;
+// TODO: if the user passes `latest` get the correct value automatically:
+async function _get_latest_juliaup_version() {
+    const version = inputs.get_juliaup_version_input();
+    return version;
+}
+// This function downloads and extracts Juliaup to a temp directory.
+// It does NOT add Juliaup to the toolcache.
+async function download_and_extract_juliaup_to_temp_dir(juliaup_version) {
+    // 1. Construct the Juliaup tarball download URL.
+    const tarball_download_url = await _construct_juliaup_tarball_download_url(juliaup_version);
+    core.info(`We will download Juliaup from: ${tarball_download_url}`);
+    // 2. Download the Juliaup tarball (from the above URL) to a temp directory.
+    // Taken from: https://github.com/julia-actions/setup-julia/blob/e9d953d306cac42c94058f27c6564ec50d97d913/src/installer.ts#L216-L225
+    //
+    // Occasionally the connection is reset for unknown reasons.
+    // In those cases, retry the download.
+    const tarball_download_path = await retry(async (bail) => {
+        return await tc.downloadTool(tarball_download_url);
+    }, {
+        retries: 5,
+        onRetry: (err) => {
+            core.info(`Download of ${tarball_download_url} failed, trying again. Error: ${err}`);
+        }
+    });
+    // 3. Extract the downloaded Juliaup tarball to a temp directory.
+    // Extract the Juliaup tarball to a temp directory:
+    const extracted_download_path = await tc.extractTar(tarball_download_path);
+    return extracted_download_path;
+}
+async function _construct_juliaup_tarball_download_url(juliaup_version) {
+    const triplet = platform.get_platform_triplet();
+    const url = `https://github.com/JuliaLang/juliaup/releases/download/v${juliaup_version}/juliaup-${juliaup_version}-${triplet}-portable.tar.gz`;
+    return url;
+}
+//# sourceMappingURL=juliaup.js.map
+
+/***/ }),
+
+/***/ 9238:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.get_platform_triplet = exports.get_julialauncher = exports.get_juliaup = void 0;
 // Built into NodeJS
 const os = __importStar(__nccwpck_require__(2037));
 const path = __importStar(__nccwpck_require__(1017));
-// Our own source code files
-const download = __importStar(__nccwpck_require__(5933));
-const input = __importStar(__nccwpck_require__(8657));
-/* eslint-disable no-alert, require-yield */
-async function ensure_juliaup_is_installed() {
-    // Step 1: Ensure that Juliaup is installed.
-    // This step depends on the operating system.
-    const platform = os.platform();
-    core.debug(`Detected platform: ${platform}`);
-    if (platform === 'win32') {
-        await _windows_ensure_juliaup_is_installed();
-    }
-    else if (platform === 'linux') {
-        await _unix_ensure_juliaup_is_installed();
-    }
-    else if (platform === 'darwin') {
-        await _unix_ensure_juliaup_is_installed();
+function get_juliaup(info) {
+    if (os.platform() === 'win32') {
+        var juliaup_exename = 'juliaup.exe';
     }
     else {
-        throw new Error(`Unsupported platform: ${platform}`);
+        var juliaup_exename = 'juliaup';
     }
-    return;
+    const juliaup = path.join(info.juliaup_dir, juliaup_exename);
+    return juliaup;
 }
-// Windows: Make sure that Juliaup is installed.
-// Only install Juliaup if it is not already installed.
-async function _windows_ensure_juliaup_is_installed() {
-    // TODO: don't install Juliaup if it is already installed.
-    await download._windows_install_juliaup();
-    return;
-}
-// Unix (non-Windows): Make sure that Juliaup is installed.
-// Only install Juliaup if it is not already installed.
-async function _unix_ensure_juliaup_is_installed() {
-    // TODO: don't install Juliaup if it is already installed.
-    await _unix_install_juliaup();
-    return;
-}
-// Unix (non-Windows): Install Juliaup.
-async function _unix_install_juliaup() {
-    core.info('We will use the curl bash method to install Juliaup, with Bash as the shell');
-    // This requires that Bash is already installed on the machine
-    await exec.exec('bash', ['--version']);
-    await exec.exec('bash', ['-c', 'curl -fsSL https://install.julialang.org | sh -s -- --yes']);
-    return;
-}
-async function install_desired_julia_version() {
-    // Step 3: Install the Julia desired version, and set it as the default.
-    const julia_version = input.get_julia_version_input();
-    const juliaup_path = get_juliaup_path();
-    await exec.exec(juliaup_path, ['add', `${julia_version}`]);
-    await exec.exec(juliaup_path, ['default', `${julia_version}`]);
-    return;
-}
-function get_juliaup_path() {
-    const juliaup_bindir = get_juliaup_bindir();
-    const juliaup_path = path.join(juliaup_bindir, 'juliaup');
-    return juliaup_path;
-}
-function get_julialauncher_path() {
-    const juliaup_bindir = get_juliaup_bindir();
-    const juliaup_path = path.join(juliaup_bindir, 'julia');
-    return juliaup_path;
-}
-function get_juliaup_bindir() {
-    const platform = os.platform();
-    if (platform === 'win32') {
-        var juliaup_bindir = _windows_get_juliaup_bindir();
+exports.get_juliaup = get_juliaup;
+function get_julialauncher(info) {
+    if (os.platform() === 'win32') {
+        var julialauncher_exename = 'julia.exe';
     }
     else {
-        var juliaup_bindir = _unix_get_juliaup_bindir();
+        var julialauncher_exename = 'julia';
     }
-    return juliaup_bindir;
+    const julia = path.join(info.juliaup_dir, julialauncher_exename);
+    return julia;
 }
-function _windows_get_juliaup_bindir() {
-    // On Windows, we assume that winget will take care of automatically
-    // adding Juliaup to the PATH.
-    //
-    // So, in this function, we actually lookup `which juliaup`, assuming
-    // that winget already added Juliaup to the PATH.
-    // Then we take the result of `which juliaup` and extract the directory
-    // name.
-    const resolved_juliaup_path = which.sync('juliaup'); // no need for await here
-    const juliaup_bindir = path.dirname(resolved_juliaup_path);
-    return juliaup_bindir;
-    // const resolved = which.sync('node')
-}
-function _unix_get_juliaup_bindir() {
-    const userHomeDir = os.homedir();
-    // TODO: look at JULIAUP_DEPOT_PATH here?
-    const juliaup_bindir = path.join(userHomeDir, '.juliaup', 'bin');
-    return juliaup_bindir;
-}
-async function add_juliaup_bindir_to_path() {
-    const platform = os.platform();
-    if (platform === 'win32') {
-        await _windows_add_juliaup_to_path();
+exports.get_julialauncher = get_julialauncher;
+function get_platform_triplet() {
+    const operating_system = os.platform();
+    const arch = process.arch;
+    if (operating_system === 'win32') {
+        if (arch === 'x64') {
+            var triplet = 'x86_64-pc-windows-gnu';
+        }
+        else {
+            throw new Error(`We do not support the \"${arch}\" arch on the \"${operating_system}\" OS`);
+        }
+    }
+    else if (operating_system === 'linux') {
+        if (arch === 'x64') {
+            var triplet = 'x86_64-unknown-linux-musl';
+        }
+        else {
+            throw new Error(`We do not support the \"${arch}\" arch on the \"${operating_system}\" OS`);
+        }
+    }
+    else if (operating_system === 'darwin') {
+        if (arch === 'x64') {
+            var triplet = 'x86_64-apple-darwin';
+        }
+        else if (arch === 'arm64') {
+            var triplet = 'aarch64-apple-darwin';
+        }
+        else {
+            throw new Error(`We do not support the \"${arch}\" arch on the \"${operating_system}\" OS`);
+        }
     }
     else {
-        await _unix_add_juliaup_to_path();
+        throw new Error(`Unknown operating system: ${operating_system}`);
     }
-    return;
+    return triplet;
 }
-async function _windows_add_juliaup_to_path() {
-    // On Windows, we assume that winget will take care of automatically
-    // adding Juliaup to the PATH. So we don't do anything ourselves.
-    return;
-}
-async function _unix_add_juliaup_to_path() {
-    const juliaup_bindir = _unix_get_juliaup_bindir();
-    // Add to the PATH
-    await core.addPath(juliaup_bindir);
-    return;
-}
-async function print_debugging_juliaup_path() {
-    const resolved_juliaup_path = get_juliaup_path();
-    console.log(`juliaup: ${resolved_juliaup_path}`);
-    await exec.exec(get_juliaup_path(), ['--version']);
-    return;
-}
-async function print_debugging_julialauncher_path() {
-    const resolved_julialauncher_path = get_julialauncher_path();
-    console.log(`julia: ${resolved_julialauncher_path}`);
-    await exec.exec(get_julialauncher_path(), ['--version']);
-    return;
-}
-async function main() {
-    // Step 1: Make sure all required inputs are provided.
-    input.get_julia_version_input();
-    // Step 2: Ensure that Juliaup is installed.
-    // This step depends on the operating system.
-    await ensure_juliaup_is_installed();
-    // Step 3: Print the path of `juliaup`:
-    await print_debugging_juliaup_path();
-    // Step 4: Install the Julia desired version, and set it as the default.
-    await install_desired_julia_version();
-    // Step 5: Print the path of `julia` (julialauncher):
-    await print_debugging_julialauncher_path();
-    // Step 6: Add Juliaup and Julialauncher to the PATH,
-    // using the GitHub Actions toolkit.
-    //
-    // This will not take affect until the next step in the job.
-    // (In other words, the changes to the PATH don't show up in this action.)
-    await add_juliaup_bindir_to_path();
-    return;
-}
-exports.main = main;
-/* eslint-disable no-alert, require-yield */
-//# sourceMappingURL=install_juliaup.js.map
+exports.get_platform_triplet = get_platform_triplet;
+//# sourceMappingURL=platform.js.map
 
 /***/ }),
 
-/***/ 3109:
+/***/ 2963:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -354,9 +379,48 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const install_juliaup = __importStar(__nccwpck_require__(6273));
-install_juliaup.main();
-//# sourceMappingURL=main.js.map
+exports.main_function_run_me = void 0;
+// npm packages that are part of the GitHub Actions toolkit
+const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
+// Built into NodeJS
+// import * as os from 'os'
+// import * as path from 'path'
+// Our own source code files
+const inputs = __importStar(__nccwpck_require__(6180));
+const julia = __importStar(__nccwpck_require__(2441));
+const juliaup = __importStar(__nccwpck_require__(2635));
+const platform = __importStar(__nccwpck_require__(9238));
+async function main_function_run_me() {
+    // Step 1: Make sure all required inputs are provided.
+    inputs.get_julia_version_input();
+    inputs.get_juliaup_version_input();
+    // Step 2: Ensure that Juliaup is installed.
+    const info = await juliaup.ensure_juliaup_is_installed();
+    // Step 3: Print the path of `juliaup`:
+    await print_debugging_juliaup_path(info);
+    // Step 4: Install the Julia desired version, and set it as the default.
+    await julia.install_desired_julia_version(info);
+    // Step 5: Print the path of `julia` (julialauncher):
+    await print_debugging_julialauncher_path(info);
+    return;
+}
+exports.main_function_run_me = main_function_run_me;
+async function print_debugging_juliaup_path(info) {
+    const juliaup = platform.get_juliaup(info);
+    console.log(`juliaup: ${juliaup}`); // TODO: delete this line
+    core.info(`juliaup: ${juliaup}`);
+    await exec.exec(juliaup, ['--version']);
+    return;
+}
+async function print_debugging_julialauncher_path(info) {
+    const julia = platform.get_julialauncher(info);
+    console.log(`julia: ${julia}`); // TODO: delete this line
+    core.info(`julia: ${julia}`);
+    await exec.exec(julia, ['--version']);
+    return;
+}
+//# sourceMappingURL=start_here.js.map
 
 /***/ }),
 
@@ -29273,124 +29337,6 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 6143:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
-
-const { isexe, sync: isexeSync } = __nccwpck_require__(5200)
-const { join, delimiter, sep, posix } = __nccwpck_require__(1017)
-
-const isWindows = process.platform === 'win32'
-
-// used to check for slashed in commands passed in. always checks for the posix
-// seperator on all platforms, and checks for the current separator when not on
-// a posix platform. don't use the isWindows check for this since that is mocked
-// in tests but we still need the code to actually work when called. that is also
-// why it is ignored from coverage.
-/* istanbul ignore next */
-const rSlash = new RegExp(`[${posix.sep}${sep === posix.sep ? '' : sep}]`.replace(/(\\)/g, '\\$1'))
-const rRel = new RegExp(`^\\.${rSlash.source}`)
-
-const getNotFoundError = (cmd) =>
-  Object.assign(new Error(`not found: ${cmd}`), { code: 'ENOENT' })
-
-const getPathInfo = (cmd, {
-  path: optPath = process.env.PATH,
-  pathExt: optPathExt = process.env.PATHEXT,
-  delimiter: optDelimiter = delimiter,
-}) => {
-  // If it has a slash, then we don't bother searching the pathenv.
-  // just check the file itself, and that's it.
-  const pathEnv = cmd.match(rSlash) ? [''] : [
-    // windows always checks the cwd first
-    ...(isWindows ? [process.cwd()] : []),
-    ...(optPath || /* istanbul ignore next: very unusual */ '').split(optDelimiter),
-  ]
-
-  if (isWindows) {
-    const pathExtExe = optPathExt ||
-      ['.EXE', '.CMD', '.BAT', '.COM'].join(optDelimiter)
-    const pathExt = pathExtExe.split(optDelimiter).flatMap((item) => [item, item.toLowerCase()])
-    if (cmd.includes('.') && pathExt[0] !== '') {
-      pathExt.unshift('')
-    }
-    return { pathEnv, pathExt, pathExtExe }
-  }
-
-  return { pathEnv, pathExt: [''] }
-}
-
-const getPathPart = (raw, cmd) => {
-  const pathPart = /^".*"$/.test(raw) ? raw.slice(1, -1) : raw
-  const prefix = !pathPart && rRel.test(cmd) ? cmd.slice(0, 2) : ''
-  return prefix + join(pathPart, cmd)
-}
-
-const which = async (cmd, opt = {}) => {
-  const { pathEnv, pathExt, pathExtExe } = getPathInfo(cmd, opt)
-  const found = []
-
-  for (const envPart of pathEnv) {
-    const p = getPathPart(envPart, cmd)
-
-    for (const ext of pathExt) {
-      const withExt = p + ext
-      const is = await isexe(withExt, { pathExt: pathExtExe, ignoreErrors: true })
-      if (is) {
-        if (!opt.all) {
-          return withExt
-        }
-        found.push(withExt)
-      }
-    }
-  }
-
-  if (opt.all && found.length) {
-    return found
-  }
-
-  if (opt.nothrow) {
-    return null
-  }
-
-  throw getNotFoundError(cmd)
-}
-
-const whichSync = (cmd, opt = {}) => {
-  const { pathEnv, pathExt, pathExtExe } = getPathInfo(cmd, opt)
-  const found = []
-
-  for (const pathEnvPart of pathEnv) {
-    const p = getPathPart(pathEnvPart, cmd)
-
-    for (const ext of pathExt) {
-      const withExt = p + ext
-      const is = isexeSync(withExt, { pathExt: pathExtExe, ignoreErrors: true })
-      if (is) {
-        if (!opt.all) {
-          return withExt
-        }
-        found.push(withExt)
-      }
-    }
-  }
-
-  if (opt.all && found.length) {
-    return found
-  }
-
-  if (opt.nothrow) {
-    return null
-  }
-
-  throw getNotFoundError(cmd)
-}
-
-module.exports = which
-which.sync = whichSync
-
-
-/***/ }),
-
 /***/ 9491:
 /***/ ((module) => {
 
@@ -29460,14 +29406,6 @@ module.exports = require("events");
 
 "use strict";
 module.exports = require("fs");
-
-/***/ }),
-
-/***/ 3292:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs/promises");
 
 /***/ }),
 
@@ -31262,212 +31200,6 @@ function parseParams (str) {
 module.exports = parseParams
 
 
-/***/ }),
-
-/***/ 5200:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.sync = exports.isexe = exports.posix = exports.win32 = void 0;
-const posix = __importStar(__nccwpck_require__(5523));
-exports.posix = posix;
-const win32 = __importStar(__nccwpck_require__(4323));
-exports.win32 = win32;
-__exportStar(__nccwpck_require__(7252), exports);
-const platform = process.env._ISEXE_TEST_PLATFORM_ || process.platform;
-const impl = platform === 'win32' ? win32 : posix;
-/**
- * Determine whether a path is executable on the current platform.
- */
-exports.isexe = impl.isexe;
-/**
- * Synchronously determine whether a path is executable on the
- * current platform.
- */
-exports.sync = impl.sync;
-//# sourceMappingURL=index.js.map
-
-/***/ }),
-
-/***/ 7252:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//# sourceMappingURL=options.js.map
-
-/***/ }),
-
-/***/ 5523:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-/**
- * This is the Posix implementation of isexe, which uses the file
- * mode and uid/gid values.
- *
- * @module
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.sync = exports.isexe = void 0;
-const fs_1 = __nccwpck_require__(7147);
-const promises_1 = __nccwpck_require__(3292);
-/**
- * Determine whether a path is executable according to the mode and
- * current (or specified) user and group IDs.
- */
-const isexe = async (path, options = {}) => {
-    const { ignoreErrors = false } = options;
-    try {
-        return checkStat(await (0, promises_1.stat)(path), options);
-    }
-    catch (e) {
-        const er = e;
-        if (ignoreErrors || er.code === 'EACCES')
-            return false;
-        throw er;
-    }
-};
-exports.isexe = isexe;
-/**
- * Synchronously determine whether a path is executable according to
- * the mode and current (or specified) user and group IDs.
- */
-const sync = (path, options = {}) => {
-    const { ignoreErrors = false } = options;
-    try {
-        return checkStat((0, fs_1.statSync)(path), options);
-    }
-    catch (e) {
-        const er = e;
-        if (ignoreErrors || er.code === 'EACCES')
-            return false;
-        throw er;
-    }
-};
-exports.sync = sync;
-const checkStat = (stat, options) => stat.isFile() && checkMode(stat, options);
-const checkMode = (stat, options) => {
-    const myUid = options.uid ?? process.getuid?.();
-    const myGroups = options.groups ?? process.getgroups?.() ?? [];
-    const myGid = options.gid ?? process.getgid?.() ?? myGroups[0];
-    if (myUid === undefined || myGid === undefined) {
-        throw new Error('cannot get uid or gid');
-    }
-    const groups = new Set([myGid, ...myGroups]);
-    const mod = stat.mode;
-    const uid = stat.uid;
-    const gid = stat.gid;
-    const u = parseInt('100', 8);
-    const g = parseInt('010', 8);
-    const o = parseInt('001', 8);
-    const ug = u | g;
-    return !!(mod & o ||
-        (mod & g && groups.has(gid)) ||
-        (mod & u && uid === myUid) ||
-        (mod & ug && myUid === 0));
-};
-//# sourceMappingURL=posix.js.map
-
-/***/ }),
-
-/***/ 4323:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-/**
- * This is the Windows implementation of isexe, which uses the file
- * extension and PATHEXT setting.
- *
- * @module
- */
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.sync = exports.isexe = void 0;
-const fs_1 = __nccwpck_require__(7147);
-const promises_1 = __nccwpck_require__(3292);
-/**
- * Determine whether a path is executable based on the file extension
- * and PATHEXT environment variable (or specified pathExt option)
- */
-const isexe = async (path, options = {}) => {
-    const { ignoreErrors = false } = options;
-    try {
-        return checkStat(await (0, promises_1.stat)(path), path, options);
-    }
-    catch (e) {
-        const er = e;
-        if (ignoreErrors || er.code === 'EACCES')
-            return false;
-        throw er;
-    }
-};
-exports.isexe = isexe;
-/**
- * Synchronously determine whether a path is executable based on the file
- * extension and PATHEXT environment variable (or specified pathExt option)
- */
-const sync = (path, options = {}) => {
-    const { ignoreErrors = false } = options;
-    try {
-        return checkStat((0, fs_1.statSync)(path), path, options);
-    }
-    catch (e) {
-        const er = e;
-        if (ignoreErrors || er.code === 'EACCES')
-            return false;
-        throw er;
-    }
-};
-exports.sync = sync;
-const checkPathExt = (path, options) => {
-    const { pathExt = process.env.PATHEXT || '' } = options;
-    const peSplit = pathExt.split(';');
-    if (peSplit.indexOf('') !== -1) {
-        return true;
-    }
-    for (let i = 0; i < peSplit.length; i++) {
-        const p = peSplit[i].toLowerCase();
-        const ext = path.substring(path.length - p.length).toLowerCase();
-        if (p && ext === p) {
-            return true;
-        }
-    }
-    return false;
-};
-const checkStat = (stat, path, options) => stat.isFile() && checkPathExt(path, options);
-//# sourceMappingURL=win32.js.map
-
 /***/ })
 
 /******/ 	});
@@ -31512,7 +31244,7 @@ const checkStat = (stat, path, options) => stat.isFile() && checkPathExt(path, o
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(3109);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(4792);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()

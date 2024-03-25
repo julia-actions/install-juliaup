@@ -3,12 +3,13 @@ description: 'Install Juliaup, add it to the PATH, and use it to install Julia'
 author: 'julia-actions organization, contributors'
 inputs:
   julia-version:
-    description: 'The Julia version to install. Example: 1.2.3'
+    description: 'The Julia version to install'
     required: true
-  # juliaup-version:
-  #   description: 'The Julia version to install. Example: 1.2.3. If not provided, defaults to the latest available Juliaup version.'
-  #   required: false
-  #   default: ''
+  juliaup-version:
+    # description: 'The Juliaup version to install. Set to "latest" to use the latest available Juliaup version.'
+    description: 'The Juliaup version to install.'
+    required: false
+    default: '1.14.7' # TODO: change this default value to 'latest'
 runs:
   using: 'node20'
   main: 'dist/index.js'
