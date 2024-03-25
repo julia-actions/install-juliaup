@@ -26,7 +26,9 @@ To install a specific Julia version:
     julia-version: '1.10.2'
 ```
 
-If you want alphas for the next upcoming release:
+In general, if `juliaup add FOO` would have been a valid command on your local machine, then `FOO` is a valid value for the `julia-version` input to this action.
+
+So, for example, suppose that you want alpha pre-releases for the next upcoming release. On your local machine, `juliaup add alpha` is a valid command. Therefore, `alpha` is a valid value for the `julia-version` input to this action:
 
 ```yaml
 - uses: julia-actions/install-juliaup@latest
@@ -34,7 +36,7 @@ If you want alphas for the next upcoming release:
     julia-version: 'alpha'
 ```
 
-In general, if `juliaup add FOO` would have been a valid command on your local machine, then `FOO` is valid value for the `julia-version` input to this action. See the [Juliaup README](https://github.com/JuliaLang/juliaup/blob/main/README.md#using-juliaup) for more examples.
+See the [Juliaup README](https://github.com/JuliaLang/juliaup/blob/main/README.md#using-juliaup) for more examples.
 
 ## Private internals
 
