@@ -29,7 +29,7 @@ First, check the `.tool-versions` file in this repo, and see what version of Nod
 
 ### Windows
 
-`asdf` does not support Windows. So on Windows, you have to install NodeJS manually.
+`asdf` does not (currently) support Windows. So on Windows, you have to install NodeJS manually.
 
 First, check the `.tool-versions` file in this repo, and see what version of NodeJS you need. Then, install that same version of NodejS on your local machine.
 
