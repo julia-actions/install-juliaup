@@ -1,0 +1,258 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags: '*'
+  merge_group: # GitHub merge queue
+concurrency:
+  # Skip intermediate builds: all builds except for builds on the `main` branch
+  # Cancel intermediate builds: only pull request builds
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/main' || github.run_number }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+permissions:
+  contents: read
+jobs:
+  finalize:
+    if: always() # this line is important to keep the `finalize` job from being marked as skipped; do not change or delete this line
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [build, checked-in-files, lint, example]
+    steps:
+      - run: |
+          echo build: ${{ needs.build.result }}
+          echo checked-in-files: ${{ needs.checked-in-files.result }}
+          echo lint: ${{ needs.lint.result }}
+          echo example: ${{ needs.example.result }}
+      # The last line must NOT end with ||
+      # All other lines MUST end with ||
+      - run: exit 1
+        if: |
+          (needs.build.result != 'success') ||
+          (needs.checked-in-files.result != 'success') ||
+          (needs.example.result != 'success')
+  build:
+    timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    steps:
+      ### Check out the repo:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          persist-credentials: false
+      ### Cleanall:
+      - run: make cleanall
+      ### Install NodeJS
+      # Unix (non-Windows):
+      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+        if: runner.os != 'Windows'
+      - run: make unix-asdf-install
+        if: runner.os != 'Windows'
+      # Windows:
+        # Windows does not support asdf, so we have to use `actions/setup-node`
+        # to install asdf:
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        if: runner.os == 'Windows'
+        with:
+          node-version-file: '.tool-versions'
+      ### Install the NodeJS packages that we depend on:
+      - run: make install-packages
+      ### Print some debugging info:
+      - name: Print the NodeJS version (for debugging)
+        run: |
+          which -a node
+          node --version
+          which -a npm
+          npm --version
+      ### Build:
+      - run: make build
+      - run: make pack
+      ### Make sure some other `make` targets don't bitrot:
+      - name: Run some other `make` targets to ensure that they don't bitrot
+        run: |
+          make clean
+          make cleanall
+  checked-in-files:
+    timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    steps:
+      ### Check out the repo:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          persist-credentials: false
+      ### Cleanall:
+      - run: make cleanall
+      ### Install NodeJS
+      # Unix (non-Windows):
+      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+        if: runner.os != 'Windows'
+      - run: make unix-asdf-install
+        if: runner.os != 'Windows'
+      # Windows:
+        # Windows does not support asdf, so we have to use `actions/setup-node`
+        # to install asdf:
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        if: runner.os == 'Windows'
+        with:
+          node-version-file: '.tool-versions'
+      ### Install the NodeJS packages that we depend on:
+      - run: make install-packages
+      ### Print some debugging info:
+      - name: Print the NodeJS version (for debugging)
+        run: |
+          which -a node
+          node --version
+          which -a npm
+          npm --version
+      ### Build:
+      - run: make pack
+      ### Clean (not cleanall!):
+      - run: make clean
+      ### Make sure there are no uncommited changes
+      - uses: julia-actions/setup-julia@ac0d62164df5a47de404f4e96ce86a1a28a28d56
+        with:
+          version: '1'
+      - run: git --no-pager status
+      - run: git --no-pager diff
+      - run: julia ./bin/check_uncommitted_changes.jl
+  lint:
+    if: false # TODO: delete this line
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+        ### Check out the repo:
+        - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+          with:
+            persist-credentials: false
+        ### Install the deps
+        # Unix (non-Windows):
+        - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+          if: runner.os != 'Windows'
+        - run: make unix-asdf-install
+          if: runner.os != 'Windows'
+        - name: Print the NodeJS version (for debugging)
+          run: |
+            which -a node
+            node --version
+            which -a npm
+            npm --version
+        ### Lint:
+        - run: make check-lint
+  # experiment-windows-1-winget: # TODO: delete this job
+  #   timeout-minutes: 30
+  #   runs-on: windows-latest
+  #   steps:
+  #     - run: which -a juliaup
+  #       continue-on-error: true
+  #     - uses: Cyberboss/install-winget@eabb209a7544e2f2ffd1616b6f9efebacc9e54fb
+  #     - run: which -a winget
+  #     - run: winget list -s msstore --accept-source-agreements
+  #     - run: winget install julia -s msstore --disable-interactivity --accept-package-agreements
+  #       # --accept-source-agreements
+  #     - run: which -a juliaup
+  # experiment-windows-2-appinstaller: # TODO: delete this job
+  #   timeout-minutes: 30
+  #   runs-on: windows-latest
+  #   steps:
+  #     - run: which -a juliaup
+  #       continue-on-error: true
+  #     - run: Invoke-WebRequest https://install.julialang.org/Julia.appinstaller -OutFile Julia.appinstaller
+  #     - run: ls Julia.appinstaller
+  #       shell: bash
+  #     - run: Add-AppxPackage -AppInstallerFile Julia.appinstaller
+  #     - run: which -a juliaup
+  # experiment-windows-3-msi: # TODO: delete this job
+  #   timeout-minutes: 30
+  #   runs-on: windows-latest
+  #   steps:
+  #     - run: which -a juliaup
+  #       continue-on-error: true
+  #     - run: Invoke-WebRequest https://install.julialang.org/Julia-x86.msi -OutFile Julia-x86.msi
+  #     - run: ls Julia-x86.msi
+  #       shell: bash
+  #     - run: msiexec /L*V /i Julia-x86.msi ALLUSERS=1
+  #     - run: which -a juliaup
+  # experiment-windows-4-portable: # TODO: delete this job
+  #   timeout-minutes: 30
+  #   runs-on: windows-latest
+  #   steps:
+  #     - run: which -a juliaup
+  #       continue-on-error: true
+  #     - run: Invoke-WebRequest https://github.com/JuliaLang/juliaup/releases/download/v1.14.7/juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz -OutFile juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
+  #     - run: ls juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
+  #       shell: bash
+  #     - run: tar xzvf juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
+  #       shell: bash
+  #     - run: rm juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
+  #     - run: ls -la
+  #       shell: bash
+  #     - run: which -a juliaup
+  example:
+    timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        julia-version:
+          - '1.9.4'
+          - '1.10.2'
+        os:
+          - ubuntu-latest
+          # - windows-latest # TODO: uncomment this line
+          - macos-latest
+          - macos-11 # Intel
+          - macos-12 # Intel
+          - macos-13 # Intel
+          - macos-14 # Apple Silicon
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          persist-credentials: false
+      - name: '[before] Print some output for debugging purposes [allow this step to fail]'
+        shell: bash
+        run: |
+          set -x
+          echo "PATH is: ${PATH:?}"
+          which -a julia
+          julia --version
+          which -a juliaup
+          juliaup --version
+        continue-on-error: true
+      - name: Run our local copy of this action (the copy that we just built)
+        uses: ./
+        with:
+          julia-version: ${{ matrix.julia-version }}
+      - run: julia test/test.jl
+        env:
+          EXPECTED_JULIA_VERSION_FOR_TESTS: ${{ matrix.julia-version }}
+      - name: '[after] Print some output for debugging purposes'
+        shell: bash
+        run: |
+          set -x
+          echo "PATH is: ${PATH:?}"
+          which -a julia
+          julia --version
+          which -a juliaup
+          juliaup --version
+      - name: '[after] Print some more debugging output'
+        shell: julia --color=yes {0}
+        run: |
+          cmd = Base.julia_cmd()
+          julia_path = cmd.exec[1]
+          @info "" julia_path
