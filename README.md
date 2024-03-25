@@ -34,4 +34,4 @@ If you want alphas for the next upcoming release:
     julia-version: 'alpha'
 ```
 
-In general, if `juliaup add FOO` would have been a valid command on your local machine, then `FOO` is valid value for the `julia-version` input to this action.
+In general, if `juliaup add FOO` would have been a valid command on your local machine, then `FOO` is valid value for the `julia-version` input to this action. See the [Juliaup README](https://github.com/JuliaLang/juliaup/blob/main/README.md#using-juliaup) for more examples.
