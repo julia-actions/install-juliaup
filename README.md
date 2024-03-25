@@ -1,5 +1,7 @@
 # `install-juliaup`
 
+Hello world.
+
 GitHub Action to install `juliaup`.
 
 When you use this action, it will do three things:
