@@ -214,7 +214,7 @@ jobs:
           - '1.10.2'
         os:
           - ubuntu-latest
-          # - windows-latest # TODO: uncomment this line
+          - windows-latest
           - macos-latest
           - macos-11 # Intel
           - macos-12 # Intel
@@ -238,7 +238,7 @@ jobs:
         uses: ./
         with:
           julia-version: ${{ matrix.julia-version }}
-      - run: julia test/test.jl
+      - run: julia ci/test.jl
         env:
           EXPECTED_JULIA_VERSION_FOR_TESTS: ${{ matrix.julia-version }}
       - name: '[after] Print some output for debugging purposes'
