@@ -225,7 +225,7 @@ jobs:
           which -a juliaup
           juliaup --version
         continue-on-error: true
-      - name: Run our local copy of this action (the copy that we just built)
+      - name: Run the local copy of this action (that is checked in to source control)
         uses: ./
         with:
           julia-version: ${{ matrix.julia-version }}
