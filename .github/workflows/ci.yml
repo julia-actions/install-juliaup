@@ -78,12 +78,9 @@ jobs:
           make cleanall
   checked-in-files:
     timeout-minutes: 30
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
     steps:
       ### Check out the repo:
       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
