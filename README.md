@@ -13,7 +13,7 @@ When you use this action, it will do three things:
 To install the latest stable Julia v1:
 
 ```yaml
-- uses: julia-actions/install-juliaup@latest
+- uses: julia-actions/install-juliaup@v1
   with:
     julia-version: '1'
 ```
@@ -21,7 +21,7 @@ To install the latest stable Julia v1:
 To install a specific Julia version:
 
 ```yaml
-- uses: julia-actions/install-juliaup@latest
+- uses: julia-actions/install-juliaup@v1
   with:
     julia-version: '1.10.2'
 ```
@@ -31,7 +31,7 @@ In general, if `juliaup add FOO` would have been a valid command on your local m
 So, for example, suppose that you want alpha pre-releases for the next upcoming release. On your local machine, `juliaup add alpha` is a valid command. Therefore, `alpha` is a valid value for the `julia-version` input to this action:
 
 ```yaml
-- uses: julia-actions/install-juliaup@latest
+- uses: julia-actions/install-juliaup@v1
   with:
     julia-version: 'alpha'
 ```
