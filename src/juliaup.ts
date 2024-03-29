@@ -24,13 +24,16 @@ export async function ensure_juliaup_is_installed() {
 
     // 3. If it wasn't found in the toolcache, we have to download it ourselves.
     if (!juliaup_dir) {
-        // Download and extract Juliaup to a
+        // Download and extract Juliaup to a temp directory:
         const extracted_download_path = await download_and_extract_juliaup_to_temp_dir(juliaup_version)
+
+        // Copy Juliaup from the temp directory to the toolcache:
         juliaup_dir = await tc.cacheDir(extracted_download_path, tool_name, juliaup_version, arch)
+        core.info(`Added Juliaup to the toolcache: ${juliaup_dir}`)
     } else {
         // If we found the desired version of Juliaup in the toolcache,
         // then we use that.
-        core.info(`Using tool-cached version of Juliaup: ${juliaup_dir}`)
+        core.info(`Using existing tool-cached version of Juliaup: ${juliaup_dir}`)
     }
 
     // 4. Add Juliaup (and thus also Julialauncher) to the PATH.
@@ -54,7 +57,7 @@ async function _get_latest_juliaup_version() {
 async function download_and_extract_juliaup_to_temp_dir(juliaup_version: string) {
     // 1. Construct the Juliaup tarball download URL.
     const tarball_download_url = await _construct_juliaup_tarball_download_url(juliaup_version)
-    core.info(`We will download Juliaup from: ${tarball_download_url}`)
+    core.info(`Attempting to download Juliaup from: ${tarball_download_url}`)
 
     // 2. Download the Juliaup tarball (from the above URL) to a temp directory.
     // Taken from: https://github.com/julia-actions/setup-julia/blob/e9d953d306cac42c94058f27c6564ec50d97d913/src/installer.ts#L216-L225
