@@ -46,3 +46,27 @@ make pack
 
 make clean
 ```
+
+When you are ready, you can commit your changes and push them to your PR.
+
+## 4. Making a new release
+
+First, go to the [Releases](https://github.com/julia-actions/install-juliaup/releases) section of this repo and create a new release using the GitHub web interface.
+
+Once you've created the new release, you need to update the `v1` tag to point to the new release. For example, suppose that the previous release was `v1.1.0`, and suppose that you just created the new release `v1.2.0`. You need to update the `v1` tag so that it points to `v1.2.0`. Here are the steps:
+
+```bash
+git clone git@github.com:julia-actions/install-juliaup.git
+cd install-juliaup
+git fetch --all --prune
+git fetch --all --tags
+
+# Delete the current v1 tag locally:
+git tag -d v1
+
+# Create a new v1 tag locally:
+git tag v1 v1.1.0
+
+# Force-push the new v1 tag:
+git push --force origin v1
+```
