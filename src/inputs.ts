@@ -16,7 +16,7 @@ export function get_julia_version_input() {
 }
 
 export function get_juliaup_version_input() {
-    const input_name = 'juliaup-version'
+    const input_name = 'internal-juliaup-version'
     const original_version_input = core.getInput(input_name)
     const version = original_version_input.trim()
 
