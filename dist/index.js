@@ -410,14 +410,12 @@ async function main_function_run_me() {
 exports.main_function_run_me = main_function_run_me;
 async function print_debugging_juliaup_path(info) {
     const juliaup = platform.get_juliaup(info);
-    console.log(`juliaup: ${juliaup}`); // TODO: delete this line
     core.info(`juliaup: ${juliaup}`);
     await exec.exec(juliaup, ['--version']);
     return;
 }
 async function print_debugging_julialauncher_path(info) {
     const julia = platform.get_julialauncher(info);
-    console.log(`julia: ${julia}`); // TODO: delete this line
     core.info(`julia: ${julia}`);
     await exec.exec(julia, ['--version']);
     return;
