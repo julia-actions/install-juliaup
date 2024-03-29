@@ -8,7 +8,9 @@ When you use this action, it will do three things:
 2. Use `juliaup` to install the specified version of Julia.
 3. Add both `juliaup` and `julia` to the PATH.
 
-## Example usage
+## Usage
+
+### Examples
 
 To install the latest stable Julia v1:
 
@@ -37,6 +39,44 @@ So, for example, suppose that you want alpha pre-releases for the next upcoming 
 ```
 
 See the [Juliaup README](https://github.com/JuliaLang/juliaup/blob/main/README.md#using-juliaup) for more examples.
+
+### Job matrices
+
+For example, suppose that your GitHub Actions workflow file includes a job matrix as such:
+
+```yaml
+strategy:
+  matrix:
+    julia-version:
+      - 'lts'
+      - '1.10'
+      - '1'
+      - 'nightly'
+```
+
+Then `install-juliaup` can use this job matrix as follows:
+
+```yaml
+- uses: julia-actions/install-juliaup@v1
+  with:
+    julia-version: ${{ matrix.julia-version }}
+```
+
+### Calling `juliaup` directly
+
+When the `install-juliaup` action runs, it adds `juliaup` to the PATH. Therefore, in subsequent steps, you can directly run `juliaup` commands if you want:
+
+```yaml
+- uses: julia-actions/install-juliaup@v1
+  with:
+    julia-version: '1'
+
+- run: juliaup status
+- run: juliaup add 1.10
+- run: juliaup update 1.10
+- run: juliaup default 1.10
+- run: juliaup status
+```
 
 ## Private internals
 
