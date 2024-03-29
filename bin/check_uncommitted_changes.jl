@@ -7,8 +7,10 @@ wait(proc)
 @info "" success(proc) proc.exitcode
 
 if !success(proc)
+    recommended_cmd = "make cleanall && make install-packages && make build && make pack"
     msg = "##[error] found changed files after build. " *
-           "Please run `make pack` and check in all changes."
+           "Please run `$(recommended_cmd)` and " *
+           "then check in all changes."
     println(stderr, msg)
     exit(1)
 end
