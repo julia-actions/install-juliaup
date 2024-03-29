@@ -161,9 +161,11 @@ jobs:
           echo "PATH is: ${PATH:?}"
           which -a julia
           julia --version
-          which -a juliaup
-          juliaup --version
-        continue-on-error: true
+          # We allow the next few commands to error
+          # (exit with nonzero exit code) without
+          # failing the whole build:
+          which -a juliup || echo "Command failed: which -a juliup"
+          juliaup --version || echo "Command failed: juliaup --version"
       - name: Run the local copy of this action (that is checked in to source control)
         uses: ./
         with:
