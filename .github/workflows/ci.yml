@@ -132,68 +132,10 @@ jobs:
   #         with:
   #           persist-credentials: false
   #       ### Install the deps
-  #       # Unix (non-Windows):
   #       - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-  #         if: runner.os != 'Windows'
   #       - run: make unix-asdf-install
-  #         if: runner.os != 'Windows'
-  #       - name: Print the NodeJS version (for debugging)
-  #         run: |
-  #           which -a node
-  #           node --version
-  #           which -a npm
-  #           npm --version
   #       ### Lint:
   #       - run: make check-lint
-  # experiment-windows-1-winget: # TODO: delete this job
-  #   timeout-minutes: 30
-  #   runs-on: windows-latest
-  #   steps:
-  #     - run: which -a juliaup
-  #       continue-on-error: true
-  #     - uses: Cyberboss/install-winget@eabb209a7544e2f2ffd1616b6f9efebacc9e54fb
-  #     - run: which -a winget
-  #     - run: winget list -s msstore --accept-source-agreements
-  #     - run: winget install julia -s msstore --disable-interactivity --accept-package-agreements
-  #       # --accept-source-agreements
-  #     - run: which -a juliaup
-  # experiment-windows-2-appinstaller: # TODO: delete this job
-  #   timeout-minutes: 30
-  #   runs-on: windows-latest
-  #   steps:
-  #     - run: which -a juliaup
-  #       continue-on-error: true
-  #     - run: Invoke-WebRequest https://install.julialang.org/Julia.appinstaller -OutFile Julia.appinstaller
-  #     - run: ls Julia.appinstaller
-  #       shell: bash
-  #     - run: Add-AppxPackage -AppInstallerFile Julia.appinstaller
-  #     - run: which -a juliaup
-  # experiment-windows-3-msi: # TODO: delete this job
-  #   timeout-minutes: 30
-  #   runs-on: windows-latest
-  #   steps:
-  #     - run: which -a juliaup
-  #       continue-on-error: true
-  #     - run: Invoke-WebRequest https://install.julialang.org/Julia-x86.msi -OutFile Julia-x86.msi
-  #     - run: ls Julia-x86.msi
-  #       shell: bash
-  #     - run: msiexec /L*V /i Julia-x86.msi ALLUSERS=1
-  #     - run: which -a juliaup
-  # experiment-windows-4-portable: # TODO: delete this job
-  #   timeout-minutes: 30
-  #   runs-on: windows-latest
-  #   steps:
-  #     - run: which -a juliaup
-  #       continue-on-error: true
-  #     - run: Invoke-WebRequest https://github.com/JuliaLang/juliaup/releases/download/v1.14.7/juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz -OutFile juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
-  #     - run: ls juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
-  #       shell: bash
-  #     - run: tar xzvf juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
-  #       shell: bash
-  #     - run: rm juliaup-1.14.7-x86_64-pc-windows-gnu-portable.tar.gz
-  #     - run: ls -la
-  #       shell: bash
-  #     - run: which -a juliaup
   example:
     timeout-minutes: 30
     runs-on: ${{ matrix.os }}
