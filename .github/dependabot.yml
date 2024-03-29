@@ -10,6 +10,11 @@ updates:
     open-pull-requests-limit: 99
 
   - package-ecosystem: "github-actions"
+    groups:
+      prod-deps:
+        dependency-type: "production"
+      dev-deps:
+        dependency-type: "development"
     directory: "/"
     schedule:
       interval: "monthly"
