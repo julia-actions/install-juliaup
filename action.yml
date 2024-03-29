@@ -5,7 +5,7 @@ inputs:
   julia-version:
     description: 'The Julia version to install'
     required: true
-  juliaup-version:
+  internal-juliaup-version:
     description: '[private internal]. The Juliaup version to install. This is not part of the public API of this action.'
     required: false
     default: '1.14.7' # Update this value whenever a new release of Juliaup is made.
