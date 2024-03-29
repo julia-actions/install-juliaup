@@ -28,7 +28,7 @@ export async function ensure_juliaup_is_installed() {
         const extracted_download_path = await download_and_extract_juliaup_to_temp_dir(juliaup_version)
         juliaup_dir = await tc.cacheDir(extracted_download_path, tool_name, juliaup_version, arch)
     } else {
-        // If we find the desired version of Juliaup in the toolcache,
+        // If we found the desired version of Juliaup in the toolcache,
         // then we use that.
         core.info(`Using tool-cached version of Juliaup: ${juliaup_dir}`)
     }
