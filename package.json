@@ -2,7 +2,6 @@
   "name": "install-juliaup",
   "description": "GitHub Action to install juliaup",
   "main": "lib/entrypoint.js",
-  "version": "1.0.0-DEV",
   "author": "julia-actions organization, contributors",
   "private": true,
   "homepage": "https://github.com/julia-actions/install-juliaup",
