@@ -18,6 +18,9 @@ To install the latest stable Julia v1:
 - uses: julia-actions/install-juliaup@v1
   with:
     julia-version: '1'
+
+# Your selected Julia version is now available in the PATH:
+- run: julia --version
 ```
 
 To install a specific Julia version:
