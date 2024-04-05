@@ -183,7 +183,7 @@ jobs:
           cmd = Base.julia_cmd()
           julia_path = cmd.exec[1]
           @info "" julia_path Base.VERSION
-  # lint:
+  # lint-check:
   #   timeout-minutes: 30
   #   runs-on: ubuntu-latest
   #   strategy:
