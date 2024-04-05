@@ -147,13 +147,13 @@ jobs:
       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
         with:
           persist-credentials: false
-      - name: '[before] Print some output for debugging purposes [allow this step to fail]'
+      - name: '[before] Print some output for debugging purposes'
         shell: bash
         run: |
           set -x
           echo "PATH is: ${PATH:?}"
-          which -a julia
-          julia --version
+          # which -a julia
+          # julia --version
           # which -a juliaup
           # juliaup --version
         # continue-on-error: true
