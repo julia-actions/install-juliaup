@@ -13,6 +13,7 @@ export async function install_desired_julia_version(info: { juliaup_dir: string}
     const juliaup = platform.get_juliaup(info)
 
     await exec.exec(juliaup, ['add', `${julia_version}`])
+    await exec.exec(juliaup, ['update', `${julia_version}`])
     await exec.exec(juliaup, ['default', `${julia_version}`])
 
     return
