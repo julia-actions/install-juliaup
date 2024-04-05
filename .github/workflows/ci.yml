@@ -154,9 +154,13 @@ jobs:
           echo "PATH is: ${PATH:?}"
           which -a julia
           julia --version
-          which -a juliaup
-          juliaup --version
-        continue-on-error: true
+          # which -a juliaup
+          # juliaup --version
+        # continue-on-error: true
+        # Note: we intentionally do not use `continue-on-error` for individual job steps.
+        # If you use `continue-on-error` for an individual job step, then if that job
+        # step fails, it prints a bunch of "error" annotations in the "Annotations" section.
+        # This is quite noisy and not helpful.
       - name: Run the local copy of this action (that is checked in to source control)
         uses: ./
         with:
