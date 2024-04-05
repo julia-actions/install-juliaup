@@ -18,13 +18,14 @@ jobs:
     if: always() # this line is important to keep the `finalize` job from being marked as skipped; do not change or delete this line
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [build, checked-in-files, example, make-targets]
+    needs: [build, checked-in-files, example, make-targets, stalecheck-npm-install]
     steps:
       - run: |
           echo build: ${{ needs.build.result }}
           echo checked-in-files: ${{ needs.checked-in-files.result }}
           echo example: ${{ needs.example.result }}
           echo make-targets: ${{ needs.make-targets.result }}
+          echo stalecheck-npm-install: ${{ needs.stalecheck-npm-install.result }}
       # The last line must NOT end with ||
       # All other lines MUST end with ||
       - run: exit 1
@@ -32,7 +33,8 @@ jobs:
           (needs.build.result != 'success') ||
           (needs.checked-in-files.result != 'success') ||
           (needs.example.result != 'success') ||
-          (needs.make-targets.result != 'success')
+          (needs.make-targets.result != 'success') ||
+          (needs.stalecheck-npm-install.result != 'success')
   build:
     timeout-minutes: 30
     runs-on: ${{ matrix.os }}
@@ -228,7 +230,7 @@ jobs:
           make clean
           make cleanall
   stalecheck-npm-install:
-    # For now, this job is intentionally excluded from failing `finalize`.
+    # TODO: consider removing this job from `finalize`.
     #
     # In this job, we are basically trying to check if `package-lock.json` is in
     # sync with `package-lock.json`.
