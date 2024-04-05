@@ -1,23 +1,39 @@
+.NOTPARALLEL:
+
 # This is the default target:
 .PHONY: pack
-pack:
-	npm run build
+pack: build
 	npm run pack
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.PHONY: everything-from-scratch
+everything-from-scratch: cleanall install-packages build pack clean
 
 # build does `npm run build`, but does not run `npm run pack`
 .PHONY: build
 build:
 	npm run build
 
+.PHONY: install-packages
+install-packages:
+	rm -rf node_modules/
+	# Note: we use `npm ci` instead of `npm install`, because we want to make sure
+	# that we respect the versions in the `package-lock.json` lockfile.
+	npm ci
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 .PHONY: clean
 clean:
 	rm -rf node_modules/
 
 .PHONY: cleanall
-cleanall:
-	rm -rf node_modules/
+cleanall: clean
 	rm -rf lib/
 	rm -rf dist/
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # .PHONY: check-lint
 # check-lint:
@@ -27,10 +43,11 @@ cleanall:
 # fix-lint:
 # 	npx eslint --fix .
 
-.PHONY: install-packages
-install-packages:
-	rm -rf node_modules/
-	npm ci
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 # asdf does not support Windows.
 # On Windows, users need to install the correct version of NodeJS themselves.
@@ -38,3 +55,5 @@ install-packages:
 unix-asdf-install:
 	asdf plugin add nodejs # update this list when we add more tools to `.tool-versions`
 	asdf install
+
+# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
