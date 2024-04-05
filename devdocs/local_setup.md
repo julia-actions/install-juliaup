@@ -65,7 +65,10 @@ git fetch --all --tags
 git tag -d v1
 
 # Create a new v1 tag locally, where the new v1 tag will point to the
-# v1.2.0 release that you created in the previous step:
+# release that you created in the previous step.
+#
+# Make sure to change `v1.2.0` to the actual value for the release
+# that you just created in the previous step.
 git tag v1 v1.2.0
 
 # Force-push the new v1 tag:
