@@ -78,6 +78,27 @@ When the `install-juliaup` action runs, it adds `juliaup` to the PATH. Therefore
 - run: juliaup status
 ```
 
+## Using Dependabot version updates to keep your GitHub Actions up to date
+
+We highly recommend that you set up Dependabot version updates on your repo to keep your GitHub Actions up to date.
+
+To set up Dependabot version updates, create a file named `.github/dependabot.yml` in your repo with the following contents:
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 99
+    labels:
+      - "dependencies"
+      - "github-actions"
+```
+
+For more details on Dependabot version updates, see the [GitHub Dependabot documentation](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates).
+
 ## Private internals
 
 The `internal-juliaup-version` input is a private internal and is not part of the public API of this action. Therefore, in a future non-breaking (minor or patch) release of this action, we are allowed to:
