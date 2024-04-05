@@ -82,41 +82,6 @@ jobs:
         run: |
           make clean
           make cleanall
-  make-targets: # This is a job to make sure that none of the `make` targets bitrot
-    timeout-minutes: 30
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-    steps:
-      ### Check out the repo:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
-        with:
-          persist-credentials: false
-      ### Cleanall:
-      - run: make cleanall
-      ### Install NodeJS
-      # Unix (non-Windows):
-      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-        if: runner.os != 'Windows'
-      - run: make unix-asdf-install
-        if: runner.os != 'Windows'
-      ### Install the NodeJS packages that we depend on:
-      - run: make install-packages
-      ### Make sure some other `make` targets don't bitrot:
-      - name: Run some other `make` targets to ensure that they don't bitrot
-        run: |
-          make unix-asdf-install
-          make install-packages
-          make build
-          make pack
-          make everything-from-scratch
-      - name: Run all of the "cleaning" `make` targets to ensure that they don't bitrot
-        run: |
-          make clean
-          make cleanall
   checked-in-files:
     timeout-minutes: 30
     runs-on: ubuntu-latest
@@ -162,21 +127,6 @@ jobs:
       - run: git --no-pager status
       - run: git --no-pager diff
       - run: julia ./bin/check_uncommitted_changes.jl
-  # lint:
-  #   timeout-minutes: 30
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #   steps:
-  #       ### Check out the repo:
-  #       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
-  #         with:
-  #           persist-credentials: false
-  #       ### Install the deps
-  #       - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-  #       - run: make unix-asdf-install
-  #       ### Lint:
-  #       - run: make check-lint
   example:
     timeout-minutes: 30
     runs-on: ${{ matrix.os }}
@@ -227,3 +177,89 @@ jobs:
           cmd = Base.julia_cmd()
           julia_path = cmd.exec[1]
           @info "" julia_path Base.VERSION
+  # lint:
+  #   timeout-minutes: 30
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #   steps:
+  #       ### Check out the repo:
+  #       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+  #         with:
+  #           persist-credentials: false
+  #       ### Install the deps
+  #       - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+  #       - run: make unix-asdf-install
+  #       ### Lint:
+  #       - run: make check-lint
+  make-targets: # This is a job to make sure that none of the `make` targets bitrot
+    timeout-minutes: 30
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      ### Check out the repo:
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+        with:
+          persist-credentials: false
+      ### Cleanall:
+      - run: make cleanall
+      ### Install NodeJS
+      # Unix (non-Windows):
+      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+        if: runner.os != 'Windows'
+      - run: make unix-asdf-install
+        if: runner.os != 'Windows'
+      ### Install the NodeJS packages that we depend on:
+      - run: make install-packages
+      ### Make sure some other `make` targets don't bitrot:
+      - name: Run some other `make` targets to ensure that they don't bitrot
+        run: |
+          make unix-asdf-install
+          make install-packages
+          make build
+          make pack
+          make everything-from-scratch
+      - name: Run all of the "cleaning" `make` targets to ensure that they don't bitrot
+        run: |
+          make clean
+          make cleanall
+  stalecheck-npm-install:
+    # For now, this job is intentionally excluded from failing `finalize`.
+    #
+    # In this job, we are basically trying to check if `package-lock.json` is in
+    # sync with `package-lock.json`.
+    #
+    # So, for example, if someone manually edits the `package.json` file, we want
+    # to make sure that the `package-lock.json` file is not out of sync with the
+    # `package.json` file.
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      ### Check out the repo:
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+        with:
+          persist-credentials: false
+      ### Install NodeJS
+      # Unix (non-Windows):
+      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
+        if: runner.os != 'Windows'
+      - run: make unix-asdf-install
+        if: runner.os != 'Windows'
+      ### Run the main commands for this job:
+      - run: make clean
+      - run: npm ci
+      # - run: npm install --package-lock-only
+      - run: npm install
+      ### Make sure there are no uncommited changes
+      - uses: julia-actions/setup-julia@f2258781c657ad9b4b88072c5eeaf9ec8c370874
+        with:
+          version: '1'
+      - run: git --no-pager status
+      - run: git --no-pager diff
+      - run: julia ./bin/check_uncommitted_changes.jl
