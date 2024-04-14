@@ -9,7 +9,7 @@ import * as platform from './platform'
 export async function install_desired_juliaup_channel(info: { juliaup_dir: string}) {
     // Install the Julia desired version, and set it as the default.
 
-    const juliaup_channel = inputs.get_julia_channel_input()
+    const juliaup_channel = inputs.get_juliaup_channel_input()
     const juliaup = platform.get_juliaup(info)
 
     await exec.exec(juliaup, ['add', `${juliaup_channel}`])
