@@ -135,7 +135,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        julia-version:
+        channel:
           - '1.9.4'
           - '1.10.2'
         os:
@@ -164,10 +164,10 @@ jobs:
       - name: Run the local copy of this action (that is checked in to source control)
         uses: ./
         with:
-          julia-version: ${{ matrix.julia-version }}
+          channel: ${{ matrix.channel }}
       - run: julia ci/test.jl
         env:
-          EXPECTED_JULIA_VERSION_FOR_TESTS: ${{ matrix.julia-version }}
+          EXPECTED_JULIA_VERSION_FOR_TESTS: ${{ matrix.channel }}
       - name: '[after] Print some output for debugging purposes'
         shell: bash
         run: |

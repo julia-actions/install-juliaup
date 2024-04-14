@@ -1,8 +1,8 @@
 // npm packages that are part of the GitHub Actions toolkit
 import * as core from '@actions/core'
 
-export function get_julia_version_input() {
-    const input_name = 'julia-version'
+export function get_juliaup_channel_input() {
+    const input_name = 'channel'
     const original_version_input = core.getInput(input_name)
     const version = original_version_input.trim()
 
