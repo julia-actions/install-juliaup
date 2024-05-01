@@ -45,7 +45,7 @@ jobs:
           - ubuntu-latest
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
         with:
           persist-credentials: false
       ### Cleanall:
@@ -91,7 +91,7 @@ jobs:
       fail-fast: false
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
         with:
           persist-credentials: false
       ### Cleanall:
@@ -144,7 +144,7 @@ jobs:
           - macos-13 # Intel
           - macos-14 # Apple Silicon
     steps:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
         with:
           persist-credentials: false
       - name: '[before] Print some output for debugging purposes'
@@ -190,7 +190,7 @@ jobs:
   #     fail-fast: false
   #   steps:
   #       ### Check out the repo:
-  #       - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+  #       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
   #         with:
   #           persist-credentials: false
   #       ### Install the deps
@@ -208,7 +208,7 @@ jobs:
           - ubuntu-latest
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
         with:
           persist-credentials: false
       ### Cleanall:
@@ -248,7 +248,7 @@ jobs:
       fail-fast: false
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b
         with:
           persist-credentials: false
       ### Install NodeJS
