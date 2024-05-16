@@ -2,6 +2,8 @@
 
 GitHub Action to install `juliaup`.
 
+Hello world.
+
 When you use this action, it will do three things:
 
 1. Make sure that `juliaup` is available (downloading if if necessary).
