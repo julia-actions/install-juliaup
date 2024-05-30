@@ -18,7 +18,7 @@ import * as platform from './platform'
 
 export async function main_function_run_me() {
     // Step 1: Make sure all required inputs are provided.
-    inputs.get_julia_version_input()
+    inputs.get_juliaup_channel_input()
     inputs.get_juliaup_version_input()
 
     // Step 2: Ensure that Juliaup is installed.
@@ -28,7 +28,7 @@ export async function main_function_run_me() {
     await print_debugging_juliaup_path(info)
 
     // Step 4: Install the Julia desired version, and set it as the default.
-    await julia.install_desired_julia_version(info)
+    await julia.install_desired_juliaup_channel(info)
 
     // Step 5: Print the path of `julia` (julialauncher):
     await print_debugging_julialauncher_path(info)

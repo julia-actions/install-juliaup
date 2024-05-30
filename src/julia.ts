@@ -6,15 +6,15 @@ import * as exec from '@actions/exec'
 import * as inputs from './inputs'
 import * as platform from './platform'
 
-export async function install_desired_julia_version(info: { juliaup_dir: string}) {
+export async function install_desired_juliaup_channel(info: { juliaup_dir: string}) {
     // Install the Julia desired version, and set it as the default.
 
-    const julia_version = inputs.get_julia_version_input()
+    const juliaup_channel = inputs.get_juliaup_channel_input()
     const juliaup = platform.get_juliaup(info)
 
-    await exec.exec(juliaup, ['add', `${julia_version}`])
-    await exec.exec(juliaup, ['update', `${julia_version}`])
-    await exec.exec(juliaup, ['default', `${julia_version}`])
+    await exec.exec(juliaup, ['add', `${juliaup_channel}`])
+    await exec.exec(juliaup, ['update', `${juliaup_channel}`])
+    await exec.exec(juliaup, ['default', `${juliaup_channel}`])
 
     return
 }

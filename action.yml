@@ -2,8 +2,8 @@ name: 'install-juliaup'
 description: 'Install Juliaup, add it to the PATH, and use it to install Julia'
 author: 'julia-actions organization, contributors'
 inputs:
-  julia-version:
-    description: 'The Julia version to install'
+  channel:
+    description: 'The Juliaup channel to install (and set as the default channel).'
     required: true
   internal-juliaup-version:
     description: '[private internal]. The Juliaup version to install. This is not part of the public API of this action.'

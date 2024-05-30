@@ -65,11 +65,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isNonEmptyString = exports.get_juliaup_version_input = exports.get_julia_version_input = void 0;
+exports.isNonEmptyString = exports.get_juliaup_version_input = exports.get_juliaup_channel_input = void 0;
 // npm packages that are part of the GitHub Actions toolkit
 const core = __importStar(__nccwpck_require__(2186));
-function get_julia_version_input() {
-    const input_name = 'julia-version';
+function get_juliaup_channel_input() {
+    const input_name = 'channel';
     const original_version_input = core.getInput(input_name);
     const version = original_version_input.trim();
     if (version != original_version_input) {
@@ -80,7 +80,7 @@ function get_julia_version_input() {
     }
     return version;
 }
-exports.get_julia_version_input = get_julia_version_input;
+exports.get_juliaup_channel_input = get_juliaup_channel_input;
 function get_juliaup_version_input() {
     const input_name = 'internal-juliaup-version';
     const original_version_input = core.getInput(input_name);
@@ -132,23 +132,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.install_desired_julia_version = void 0;
+exports.install_desired_juliaup_channel = void 0;
 // npm packages that are part of the GitHub Actions toolkit
 // import * as core from '@actions/core'
 const exec = __importStar(__nccwpck_require__(1514));
 // Our own source code files
 const inputs = __importStar(__nccwpck_require__(6180));
 const platform = __importStar(__nccwpck_require__(9238));
-async function install_desired_julia_version(info) {
+async function install_desired_juliaup_channel(info) {
     // Install the Julia desired version, and set it as the default.
-    const julia_version = inputs.get_julia_version_input();
+    const juliaup_channel = inputs.get_juliaup_channel_input();
     const juliaup = platform.get_juliaup(info);
-    await exec.exec(juliaup, ['add', `${julia_version}`]);
-    await exec.exec(juliaup, ['update', `${julia_version}`]);
-    await exec.exec(juliaup, ['default', `${julia_version}`]);
+    await exec.exec(juliaup, ['add', `${juliaup_channel}`]);
+    await exec.exec(juliaup, ['update', `${juliaup_channel}`]);
+    await exec.exec(juliaup, ['default', `${juliaup_channel}`]);
     return;
 }
-exports.install_desired_julia_version = install_desired_julia_version;
+exports.install_desired_juliaup_channel = install_desired_juliaup_channel;
 //# sourceMappingURL=julia.js.map
 
 /***/ }),
@@ -398,14 +398,14 @@ const juliaup = __importStar(__nccwpck_require__(2635));
 const platform = __importStar(__nccwpck_require__(9238));
 async function main_function_run_me() {
     // Step 1: Make sure all required inputs are provided.
-    inputs.get_julia_version_input();
+    inputs.get_juliaup_channel_input();
     inputs.get_juliaup_version_input();
     // Step 2: Ensure that Juliaup is installed.
     const info = await juliaup.ensure_juliaup_is_installed();
     // Step 3: Print the path of `juliaup`:
     await print_debugging_juliaup_path(info);
     // Step 4: Install the Julia desired version, and set it as the default.
-    await julia.install_desired_julia_version(info);
+    await julia.install_desired_juliaup_channel(info);
     // Step 5: Print the path of `julia` (julialauncher):
     await print_debugging_julialauncher_path(info);
     return;
