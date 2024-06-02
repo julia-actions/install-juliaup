@@ -15,7 +15,7 @@ When you use this action, it will do three things:
 To install the latest stable Julia v1:
 
 ```yaml
-- uses: julia-actions/install-juliaup@v1
+- uses: julia-actions/install-juliaup@v2
   with:
     channel: '1'
 
@@ -26,7 +26,7 @@ To install the latest stable Julia v1:
 To install a specific Julia version:
 
 ```yaml
-- uses: julia-actions/install-juliaup@v1
+- uses: julia-actions/install-juliaup@v2
   with:
     channel: '1.10.2'
 ```
@@ -36,7 +36,7 @@ In general, if `juliaup add FOO` would have been a valid command on your local m
 So, for example, suppose that you want alpha pre-releases for the next upcoming release. On your local machine, `juliaup add alpha` is a valid command. Therefore, `alpha` is a valid value for the `channel` input to this action:
 
 ```yaml
-- uses: julia-actions/install-juliaup@v1
+- uses: julia-actions/install-juliaup@v2
   with:
     channel: 'alpha'
 ```
@@ -60,7 +60,7 @@ strategy:
 Then `install-juliaup` can use this job matrix as follows:
 
 ```yaml
-- uses: julia-actions/install-juliaup@v1
+- uses: julia-actions/install-juliaup@v2
   with:
     channel: ${{ matrix.juliaup_channel }}
 ```
@@ -70,7 +70,7 @@ Then `install-juliaup` can use this job matrix as follows:
 When the `install-juliaup` action runs, it adds `juliaup` to the PATH. Therefore, in subsequent steps, you can directly run `juliaup` commands if you want:
 
 ```yaml
-- uses: julia-actions/install-juliaup@v1
+- uses: julia-actions/install-juliaup@v2
   with:
     channel: '1'
 
