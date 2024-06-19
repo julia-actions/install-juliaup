@@ -102,6 +102,10 @@ updates:
 
 For more details on Dependabot version updates, see the [GitHub Dependabot documentation](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates).
 
+## Contributing to this repo
+
+Please see the [README in the `devdocs` folder](devdocs/README.md).
+
 ## Private internals
 
 The `internal-juliaup-version` input is a private internal and is not part of the public API of this action. Therefore, in a future non-breaking (minor or patch) release of this action, we are allowed to:
