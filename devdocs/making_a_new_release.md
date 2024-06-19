@@ -1,4 +1,8 @@
-# Making a new release of this action
+# Making a new release of this action (requires commit access)
+
+If you have commit access to this repo, you can make a new release.
+
+Here are the instructions.
 
 First, go to the [Releases](https://github.com/julia-actions/install-juliaup/releases) section of this repo and create a new release using the GitHub web interface.
 
