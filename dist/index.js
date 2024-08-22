@@ -330,6 +330,9 @@ function get_platform_triplet() {
         if (arch === 'x64') {
             var triplet = 'x86_64-unknown-linux-musl';
         }
+        else if (arch === 'arm64') {
+            var triplet = 'aarch64-unknown-linux-musl';
+        }
         else {
             throw new Error(`We do not support the \"${arch}\" arch on the \"${operating_system}\" OS`);
         }
