@@ -65,7 +65,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isNonEmptyString = exports.get_juliaup_version_input = exports.get_juliaup_channel_input = void 0;
+exports.get_juliaup_channel_input = get_juliaup_channel_input;
+exports.get_juliaup_version_input = get_juliaup_version_input;
+exports.isNonEmptyString = isNonEmptyString;
 // npm packages that are part of the GitHub Actions toolkit
 const core = __importStar(__nccwpck_require__(2186));
 function get_juliaup_channel_input() {
@@ -80,7 +82,6 @@ function get_juliaup_channel_input() {
     }
     return version;
 }
-exports.get_juliaup_channel_input = get_juliaup_channel_input;
 function get_juliaup_version_input() {
     const input_name = 'internal-juliaup-version';
     const original_version_input = core.getInput(input_name);
@@ -93,12 +94,10 @@ function get_juliaup_version_input() {
     }
     return version;
 }
-exports.get_juliaup_version_input = get_juliaup_version_input;
 function isNonEmptyString(str) {
     const result = str && str.length > 0;
     return result;
 }
-exports.isNonEmptyString = isNonEmptyString;
 //# sourceMappingURL=inputs.js.map
 
 /***/ }),
@@ -132,7 +131,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.install_desired_juliaup_channel = void 0;
+exports.install_desired_juliaup_channel = install_desired_juliaup_channel;
 // npm packages that are part of the GitHub Actions toolkit
 // import * as core from '@actions/core'
 const exec = __importStar(__nccwpck_require__(1514));
@@ -148,7 +147,6 @@ async function install_desired_juliaup_channel(info) {
     await exec.exec(juliaup, ['default', `${juliaup_channel}`]);
     return;
 }
-exports.install_desired_juliaup_channel = install_desired_juliaup_channel;
 //# sourceMappingURL=julia.js.map
 
 /***/ }),
@@ -182,7 +180,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ensure_juliaup_is_installed = void 0;
+exports.ensure_juliaup_is_installed = ensure_juliaup_is_installed;
 // npm packages that are part of the GitHub Actions toolkit
 const core = __importStar(__nccwpck_require__(2186));
 // import * as exec from '@actions/exec'
@@ -221,7 +219,6 @@ async function ensure_juliaup_is_installed() {
     };
     return info;
 }
-exports.ensure_juliaup_is_installed = ensure_juliaup_is_installed;
 // TODO: if the user passes `latest` get the correct value automatically:
 async function _get_latest_juliaup_version() {
     const version = inputs.get_juliaup_version_input();
@@ -289,7 +286,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.get_platform_triplet = exports.get_julialauncher = exports.get_juliaup = void 0;
+exports.get_juliaup = get_juliaup;
+exports.get_julialauncher = get_julialauncher;
+exports.get_platform_triplet = get_platform_triplet;
 // Built into NodeJS
 const os = __importStar(__nccwpck_require__(2037));
 const path = __importStar(__nccwpck_require__(1017));
@@ -303,7 +302,6 @@ function get_juliaup(info) {
     const juliaup = path.join(info.juliaup_dir, juliaup_exename);
     return juliaup;
 }
-exports.get_juliaup = get_juliaup;
 function get_julialauncher(info) {
     if (os.platform() === 'win32') {
         var julialauncher_exename = 'julia.exe';
@@ -314,7 +312,6 @@ function get_julialauncher(info) {
     const julia = path.join(info.juliaup_dir, julialauncher_exename);
     return julia;
 }
-exports.get_julialauncher = get_julialauncher;
 function get_platform_triplet() {
     const operating_system = os.platform();
     const arch = process.arch;
@@ -353,7 +350,6 @@ function get_platform_triplet() {
     }
     return triplet;
 }
-exports.get_platform_triplet = get_platform_triplet;
 //# sourceMappingURL=platform.js.map
 
 /***/ }),
@@ -387,7 +383,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.main_function_run_me = void 0;
+exports.main_function_run_me = main_function_run_me;
 // npm packages that are part of the GitHub Actions toolkit
 const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
@@ -413,7 +409,6 @@ async function main_function_run_me() {
     await print_debugging_julialauncher_path(info);
     return;
 }
-exports.main_function_run_me = main_function_run_me;
 async function print_debugging_juliaup_path(info) {
     const juliaup = platform.get_juliaup(info);
     core.info(`juliaup: ${juliaup}`);
@@ -2813,7 +2808,7 @@ class HttpClient {
         }
         const usingSsl = parsedUrl.protocol === 'https:';
         proxyAgent = new undici_1.ProxyAgent(Object.assign({ uri: proxyUrl.href, pipelining: !this._keepAlive ? 0 : 1 }, ((proxyUrl.username || proxyUrl.password) && {
-            token: `${proxyUrl.username}:${proxyUrl.password}`
+            token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString('base64')}`
         })));
         this._proxyAgentDispatcher = proxyAgent;
         if (usingSsl && this._ignoreSslError) {
@@ -2927,11 +2922,11 @@ function getProxyUrl(reqUrl) {
     })();
     if (proxyVar) {
         try {
-            return new URL(proxyVar);
+            return new DecodedURL(proxyVar);
         }
         catch (_a) {
             if (!proxyVar.startsWith('http://') && !proxyVar.startsWith('https://'))
-                return new URL(`http://${proxyVar}`);
+                return new DecodedURL(`http://${proxyVar}`);
         }
     }
     else {
@@ -2989,6 +2984,19 @@ function isLoopbackAddress(host) {
         hostLower.startsWith('127.') ||
         hostLower.startsWith('[::1]') ||
         hostLower.startsWith('[0:0:0:0:0:0:0:1]'));
+}
+class DecodedURL extends URL {
+    constructor(url, base) {
+        super(url, base);
+        this._decodedUsername = decodeURIComponent(super.username);
+        this._decodedPassword = decodeURIComponent(super.password);
+    }
+    get username() {
+        return this._decodedUsername;
+    }
+    get password() {
+        return this._decodedPassword;
+    }
 }
 //# sourceMappingURL=proxy.js.map
 
