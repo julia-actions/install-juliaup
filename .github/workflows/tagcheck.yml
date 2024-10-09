@@ -1,6 +1,10 @@
 name: tagcheck
 # This CI file just checks that the latest tagged release of this
 # action (julia-actions/install-juliaup) runs without error.
+#
+# This CI file does NOT test the code that is on the currently
+# checked-out branch. It only runs the code in the latest tagged
+# release of this repo.
 on:
   pull_request:
   push:
