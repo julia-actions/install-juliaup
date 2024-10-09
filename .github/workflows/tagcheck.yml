@@ -30,7 +30,7 @@ jobs:
         with:
           channel: '1'
       - run: julia --version
-      - run: julia -e 'import InteractiveUtils; InteractiveUtils.version()'
+      - run: julia -e 'import InteractiveUtils; InteractiveUtils.versioninfo()'
   tagcheck-version:
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
@@ -45,7 +45,7 @@ jobs:
         with:
           channel: '1'
       - run: julia --version
-      - run: julia -e 'import InteractiveUtils; InteractiveUtils.version()'
+      - run: julia -e 'import InteractiveUtils; InteractiveUtils.versioninfo()'
   tagcheck-convenience:
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
@@ -61,4 +61,4 @@ jobs:
         with:
           channel: '1'
       - run: julia --version
-      - run: julia -e 'import InteractiveUtils; InteractiveUtils.version()'
+      - run: julia -e 'import InteractiveUtils; InteractiveUtils.versioninfo()'
