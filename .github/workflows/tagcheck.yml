@@ -1,0 +1,64 @@
+name: tagcheck
+# This CI file just checks that the latest tagged release of this
+# action (julia-actions/install-juliaup) runs without error.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags: '*'
+  # merge_group: # GitHub merge queue
+concurrency:
+  # Skip intermediate builds: all builds except for builds on the `main` branch
+  # Cancel intermediate builds: only pull request builds
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.ref != 'refs/heads/main' || github.run_number }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+permissions:
+  contents: read
+jobs:
+  tagcheck-hash:
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      # We use Dependabot to automatically update the following line:
+      - uses: julia-actions/install-juliaup@8fcbfb2c711ea4be133dc43d251b5f862c9016eb # v2.2.0
+        with:
+          channel: '1'
+      - run: julia --version
+      - run: julia -e 'import InteractiveUtils; InteractiveUtils.version()'
+  tagcheck-version:
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      # We use Dependabot to automatically update the following line:
+      - uses: julia-actions/install-juliaup@v2.2.0
+        with:
+          channel: '1'
+      - run: julia --version
+      - run: julia -e 'import InteractiveUtils; InteractiveUtils.version()'
+  tagcheck-convenience:
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+    steps:
+      # Note: if/when we release v3 of this action,
+      # change the following line from v2 to v3:
+      - uses: julia-actions/install-juliaup@v2
+        with:
+          channel: '1'
+      - run: julia --version
+      - run: julia -e 'import InteractiveUtils; InteractiveUtils.version()'
