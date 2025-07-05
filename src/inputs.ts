@@ -10,7 +10,7 @@ export function get_juliaup_channel_input() {
         throw new Error(`The ${input_name} input is not allowed to begin or end with whitespace: ${original_version_input}`)
     }
     if (!isNonEmptyString(version)) {
-        throw new Error(`You must specify a value for the ${input_name} input`)
+        return '1'
     }
     return version
 }
