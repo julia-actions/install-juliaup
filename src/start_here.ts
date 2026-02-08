@@ -1,14 +1,6 @@
 // npm packages that are part of the GitHub Actions toolkit
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
-import * as tc from '@actions/tool-cache'
-
-// Other npm packages
-import * as which from 'which'
-
-// Built into NodeJS
-// import * as os from 'os'
-// import * as path from 'path'
 
 // Our own source code files
 import * as inputs from './inputs'
