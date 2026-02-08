@@ -1,10 +1,8 @@
 // npm packages that are part of the GitHub Actions toolkit
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
-import * as tc from '@actions/tool-cache'
 
 // Other npm packages
-import * as which from 'which'
 
 // Built into NodeJS
 // import * as os from 'os'
@@ -36,14 +34,14 @@ export async function main_function_run_me() {
     return
 }
 
-async function print_debugging_juliaup_path(info: { juliaup_dir: string}) {
+async function print_debugging_juliaup_path(info: { juliaup_dir: string }) {
     const juliaup = platform.get_juliaup(info)
     core.info(`juliaup: ${juliaup}`)
     await exec.exec(juliaup, ['--version'])
     return
 }
 
-async function print_debugging_julialauncher_path(info: { juliaup_dir: string}) {
+async function print_debugging_julialauncher_path(info: { juliaup_dir: string }) {
     const julia = platform.get_julialauncher(info)
     core.info(`julia: ${julia}`)
 
