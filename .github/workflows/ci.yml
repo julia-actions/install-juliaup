@@ -157,6 +157,7 @@ jobs:
           echo "PATH is: ${PATH:?}"
           which -a julia
           julia --version
+          julia -e 'import InteractiveUtils; InteractiveUtils.versioninfo()'
           which -a juliaup
           juliaup --version
       - name: '[after] Print some more debugging output'
