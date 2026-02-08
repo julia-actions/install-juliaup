@@ -4,32 +4,27 @@
 
 ```bash
 git clone git@github.com:julia-actions/install-juliaup.git
+
 cd install-juliaup
 ```
 
 ## 2. Install NodeJS
 
-### Unix, using `asdf` (recommended, but not required)
+### Using `mise` (recommended, but not required)
 
-First, make sure that you have installed [`asdf`](https://asdf-vm.com/) on your local machine.
+First, make sure that you have installed [`mise`](https://mise.jdx.dev) on your local machine.
 
 Then, `cd` to your clone of the repo and run the following command:
 
 ```bash
-make unix-asdf-install
+make mise-install
 ```
 
-This will use `asdf` to install the correct version of NodeJS.
+This will use `mise` to install the correct version of NodeJS.
 
-### Unix, but not using `asdf`
+### Not using `mise`
 
-Instead of using `asdf`, you can instead choose to install NodeJS manually.
-
-First, check the `.tool-versions` file in this repo, and see what version of NodeJS you need. Then, install that same version of NodejS on your local machine.
-
-### Windows
-
-`asdf` does not (currently) support Windows. So on Windows, you have to install NodeJS manually.
+Instead of using `mise`, you can instead choose to install NodeJS manually.
 
 First, check the `.tool-versions` file in this repo, and see what version of NodeJS you need. Then, install that same version of NodejS on your local machine.
 
