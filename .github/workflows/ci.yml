@@ -118,8 +118,7 @@ jobs:
       fail-fast: false
       matrix:
         channel:
-          - '1.9.4'
-          - '1.10.2'
+          - 'pr60892' # https://github.com/JuliaLang/julia/pull/60892
         os:
           - ubuntu-latest
           - windows-latest
