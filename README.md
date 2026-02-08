@@ -106,10 +106,13 @@ For more details on Dependabot version updates, see the [GitHub Dependabot docum
 
 Please see the [README in the `devdocs` folder](devdocs/README.md).
 
-## Private internals
+## Installing a specific Juliaup version
 
-The `internal-juliaup-version` input is a private internal and is not part of the public API of this action. Therefore, in a future non-breaking (minor or patch) release of this action, we are allowed to:
-1. Rename the input.
-2. Remove the input altogether.
-3. Change the default value of the input.
-4. Make any other changes to the behavior of the input.
+By default, the latest v1 version of Juliaup will be installed. If you instead want to install a specific version of Juliaup, you can specify it in the optional `juliaup-version` input. For example:
+
+```yaml
+- uses: julia-actions/install-juliaup@v2
+  with:
+    channel: '1'
+    juliaup-version: '1.19.4'
+```

@@ -16,7 +16,7 @@ export function get_juliaup_channel_input() {
 }
 
 export function get_juliaup_version_input() {
-    const input_name = 'internal-juliaup-version'
+    const input_name = 'juliaup-version'
     const original_input = core.getInput(input_name)
     const trimmed_input = original_input.trim()
 
