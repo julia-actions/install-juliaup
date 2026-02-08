@@ -15,8 +15,8 @@ import * as platform from './platform'
 
 export async function main_function_run_me() {
     // Step 1: Make sure all required inputs are provided.
-    inputs.get_juliaup_channel_input()
-    inputs.get_juliaup_version_input()
+    await inputs.get_juliaup_channel_input()
+    await inputs.get_juliaup_version_input()
 
     // Step 2: Ensure that Juliaup is installed.
     const info = await juliaup.ensure_juliaup_is_installed()

@@ -53,7 +53,7 @@ export async function ensure_juliaup_is_installed() {
 
 // TODO: if the user passes `latest` get the correct value automatically:
 async function _get_latest_juliaup_version() {
-    const version = inputs.get_juliaup_version_input()
+    const version = await inputs.get_juliaup_version_input()
     return version
 }
 

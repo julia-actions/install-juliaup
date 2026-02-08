@@ -147,7 +147,7 @@ async function install_desired_juliaup_channel(info) {
     // npm packages that are part of the GitHub Actions toolkit
     const { exec: exec_exec } = await __nccwpck_require__.e(/* import() */ 955).then(__nccwpck_require__.bind(__nccwpck_require__, 1955));
     // Install the Julia desired version, and set it as the default.
-    const juliaup_channel = inputs.get_juliaup_channel_input();
+    const juliaup_channel = await inputs.get_juliaup_channel_input();
     const juliaup = platform.get_juliaup(info);
     await exec_exec(juliaup, ['add', `${juliaup_channel}`]);
     await exec_exec(juliaup, ['update', `${juliaup_channel}`]);
@@ -242,7 +242,7 @@ async function ensure_juliaup_is_installed() {
 }
 // TODO: if the user passes `latest` get the correct value automatically:
 async function _get_latest_juliaup_version() {
-    const version = inputs.get_juliaup_version_input();
+    const version = await inputs.get_juliaup_version_input();
     return version;
 }
 // This function downloads and extracts Juliaup to a temp directory.
@@ -442,8 +442,8 @@ const juliaup = __importStar(__nccwpck_require__(1352));
 const platform = __importStar(__nccwpck_require__(3993));
 async function main_function_run_me() {
     // Step 1: Make sure all required inputs are provided.
-    inputs.get_juliaup_channel_input();
-    inputs.get_juliaup_version_input();
+    await inputs.get_juliaup_channel_input();
+    await inputs.get_juliaup_version_input();
     // Step 2: Ensure that Juliaup is installed.
     const info = await juliaup.ensure_juliaup_is_installed();
     // Step 3: Print the path of `juliaup`:
