@@ -64,7 +64,6 @@ jobs:
           which -a npm
           npm --version
       ### Build:
-      - run: make build
       - run: make pack
       ### Make sure some other `make` targets don't bitrot:
       - name: Run some other `make` targets to ensure that they don't bitrot
@@ -208,7 +207,6 @@ jobs:
         run: |
           make mise-install
           make install-packages
-          make build
           make pack
           make everything-from-scratch
       - name: Run all of the "cleaning" `make` targets to ensure that they don't bitrot

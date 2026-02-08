@@ -2,18 +2,13 @@
 
 # This is the default target:
 .PHONY: pack
-pack: build
+pack:
 	npm run pack
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .PHONY: everything-from-scratch
-everything-from-scratch: cleanall install-packages build pack clean
-
-# build does `npm run build`, but does not run `npm run pack`
-.PHONY: build
-build:
-	npm run build
+everything-from-scratch: cleanall install-packages pack clean
 
 .PHONY: install-packages
 install-packages:
