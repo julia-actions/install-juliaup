@@ -1,5 +1,5 @@
 // npm packages that are part of the GitHub Actions toolkit
-import * as exec from '@actions/exec'
+const exec = require('./@actions/exec');
 
 // Our own source code files
 import * as inputs from './inputs'
