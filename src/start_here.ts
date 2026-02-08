@@ -1,5 +1,5 @@
 // npm packages that are part of the GitHub Actions toolkit
-import * as core from '@actions/core'
+const core = require('./@actions/core');
 import * as exec from '@actions/exec'
 
 // Our own source code files
