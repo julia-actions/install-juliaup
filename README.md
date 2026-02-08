@@ -23,6 +23,15 @@ To install the latest stable Julia v1:
 - run: julia --version
 ```
 
+Note: this uses the default `GITHUB_TOKEN` to authenticate read-only calls to the GitHub API. To use a different token, provide it in the optional `token` input:
+
+```yaml
+- uses: julia-actions/install-juliaup@v2
+  with:
+    channel: '1'
+    token: ${{ secrets.MY_GITHUB_TOKEN }}
+```
+
 To install a specific Julia version:
 
 ```yaml
