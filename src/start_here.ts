@@ -36,14 +36,14 @@ export async function main_function_run_me() {
     return
 }
 
-async function print_debugging_juliaup_path(info: { juliaup_dir: string}) {
+async function print_debugging_juliaup_path(info: { juliaup_dir: string }) {
     const juliaup = platform.get_juliaup(info)
     core.info(`juliaup: ${juliaup}`)
     await exec.exec(juliaup, ['--version'])
     return
 }
 
-async function print_debugging_julialauncher_path(info: { juliaup_dir: string}) {
+async function print_debugging_julialauncher_path(info: { juliaup_dir: string }) {
     const julia = platform.get_julialauncher(info)
     core.info(`julia: ${julia}`)
 

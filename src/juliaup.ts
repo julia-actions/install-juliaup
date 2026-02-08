@@ -1,6 +1,5 @@
 // npm packages that are part of the GitHub Actions toolkit
 import * as core from '@actions/core'
-// import * as exec from '@actions/exec'
 import * as tc from '@actions/tool-cache'
 
 // Other npm packages
