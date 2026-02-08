@@ -1,14 +1,11 @@
-// npm packages that are part of the GitHub Actions toolkit
-import * as core from '@actions/core'
-import * as exec from '@actions/exec'
-import * as tc from '@actions/tool-cache'
+// npm packages that are part of the GitHub Actions toolkit:
+// See dynamic imports below
+// await import('@actions/core');
+// await import('@actions/exec');
 
 // Other npm packages
-import * as which from 'which'
 
 // Built into NodeJS
-// import * as os from 'os'
-// import * as path from 'path'
 
 // Our own source code files
 import * as inputs from './inputs'
@@ -36,17 +33,27 @@ export async function main_function_run_me() {
     return
 }
 
-async function print_debugging_juliaup_path(info: { juliaup_dir: string}) {
-    const juliaup = platform.get_juliaup(info)
-    core.info(`juliaup: ${juliaup}`)
-    await exec.exec(juliaup, ['--version'])
+async function print_debugging_juliaup_path(info_object: { juliaup_dir: string }) {
+    // Dynamic imports:
+    // npm packages that are part of the GitHub Actions toolkit
+    const { info: core_info } = await import('@actions/core');
+    const { exec: exec_exec } = await import('@actions/exec');
+
+    const juliaup = platform.get_juliaup(info_object)
+    core_info(`juliaup: ${juliaup}`)
+    await exec_exec(juliaup, ['--version'])
     return
 }
 
-async function print_debugging_julialauncher_path(info: { juliaup_dir: string}) {
-    const julia = platform.get_julialauncher(info)
-    core.info(`julia: ${julia}`)
+async function print_debugging_julialauncher_path(info_object: { juliaup_dir: string }) {
+    // Dynamic imports:
+    // npm packages that are part of the GitHub Actions toolkit
+    const { info: core_info } = await import('@actions/core');
+    const { exec: exec_exec } = await import('@actions/exec');
 
-    await exec.exec(julia, ['--version'])
+    const julia = platform.get_julialauncher(info_object)
+    core_info(`julia: ${julia}`)
+
+    await exec_exec(julia, ['--version'])
     return
 }

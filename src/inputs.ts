@@ -1,9 +1,14 @@
-// npm packages that are part of the GitHub Actions toolkit
-import * as core from '@actions/core'
+// npm packages that are part of the GitHub Actions toolkit:
+// See dynamic imports below
+// await import('@actions/core');
 
-export function get_juliaup_channel_input() {
+export async function get_juliaup_channel_input() {
+    // Dynamic imports:
+    // npm packages that are part of the GitHub Actions toolkit
+    const { getInput: core_getInput } = await import('@actions/core');
+
     const input_name = 'channel'
-    const original_input = core.getInput(input_name)
+    const original_input = core_getInput(input_name)
     const trimmed_input = original_input.trim()
 
     if (trimmed_input != original_input) {
@@ -15,9 +20,13 @@ export function get_juliaup_channel_input() {
     return trimmed_input
 }
 
-export function get_juliaup_version_input() {
+export async function get_juliaup_version_input() {
+    // Dynamic imports:
+    // npm packages that are part of the GitHub Actions toolkit
+    const { getInput: core_getInput } = await import('@actions/core');
+
     const input_name = 'internal-juliaup-version'
-    const original_input = core.getInput(input_name)
+    const original_input = core_getInput(input_name)
     const trimmed_input = original_input.trim()
 
     if (trimmed_input != original_input) {

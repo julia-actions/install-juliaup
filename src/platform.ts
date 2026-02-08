@@ -2,7 +2,7 @@
 import * as os from 'os'
 import * as path from 'path'
 
-export function get_juliaup(info: { juliaup_dir: string}) {
+export function get_juliaup(info: { juliaup_dir: string }) {
     if (os.platform() === 'win32') {
         var juliaup_exename = 'juliaup.exe'
     } else {
@@ -12,7 +12,7 @@ export function get_juliaup(info: { juliaup_dir: string}) {
     return juliaup
 }
 
-export function get_julialauncher(info: { juliaup_dir: string}) {
+export function get_julialauncher(info: { juliaup_dir: string }) {
     if (os.platform() === 'win32') {
         var julialauncher_exename = 'julia.exe'
     } else {
