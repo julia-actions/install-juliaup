@@ -50,19 +50,10 @@ jobs:
           persist-credentials: false
       ### Cleanall:
       - run: make cleanall
-      ### Install NodeJS
-      # Unix (non-Windows):
-      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-        if: runner.os != 'Windows'
-      - run: make unix-asdf-install
-        if: runner.os != 'Windows'
-      # Windows:
-        # Windows does not support asdf, so we have to use `actions/setup-node`
-        # to install asdf:
-      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
-        if: runner.os == 'Windows'
-        with:
-          node-version-file: '.tool-versions'
+      ### Install mise-en-place
+      - uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
+      ### Install NodeJS (by using mise-en-place)
+      - run: make mise-install
       ### Install the NodeJS packages that we depend on:
       - run: make install-packages
       ### Print some debugging info:
@@ -96,19 +87,10 @@ jobs:
           persist-credentials: false
       ### Cleanall:
       - run: make cleanall
-      ### Install NodeJS
-      # Unix (non-Windows):
-      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-        if: runner.os != 'Windows'
-      - run: make unix-asdf-install
-        if: runner.os != 'Windows'
-      # Windows:
-        # Windows does not support asdf, so we have to use `actions/setup-node`
-        # to install asdf:
-      - uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
-        if: runner.os == 'Windows'
-        with:
-          node-version-file: '.tool-versions'
+      ### Install mise-en-place
+      - uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
+      ### Install NodeJS (by using mise-en-place)
+      - run: make mise-install
       ### Install the NodeJS packages that we depend on:
       - run: make install-packages
       ### Print some debugging info:
@@ -193,9 +175,10 @@ jobs:
   #       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871
   #         with:
   #           persist-credentials: false
-  #       ### Install the deps
-  #       - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-  #       - run: make unix-asdf-install
+  #       ### Install mise-en-place
+  #       - uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
+  #       ### Install NodeJS (by using mise-en-place)
+  #       - run: make mise-install
   #       ### Lint:
   #       - run: make check-lint
   make-targets: # This is a job to make sure that none of the `make` targets bitrot
@@ -213,18 +196,16 @@ jobs:
           persist-credentials: false
       ### Cleanall:
       - run: make cleanall
-      ### Install NodeJS
-      # Unix (non-Windows):
-      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-        if: runner.os != 'Windows'
-      - run: make unix-asdf-install
-        if: runner.os != 'Windows'
+      ### Install mise-en-place
+      - uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
+      ### Install NodeJS (by using mise-en-place)
+      - run: make mise-install
       ### Install the NodeJS packages that we depend on:
       - run: make install-packages
       ### Make sure some other `make` targets don't bitrot:
       - name: Run some other `make` targets to ensure that they don't bitrot
         run: |
-          make unix-asdf-install
+          make mise-install
           make install-packages
           make build
           make pack
@@ -251,12 +232,10 @@ jobs:
       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871
         with:
           persist-credentials: false
-      ### Install NodeJS
-      # Unix (non-Windows):
-      - uses: asdf-vm/actions/setup@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
-        if: runner.os != 'Windows'
-      - run: make unix-asdf-install
-        if: runner.os != 'Windows'
+      ### Install mise-en-place
+      - uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
+      ### Install NodeJS (by using mise-en-place)
+      - run: make mise-install
       ### Run the main commands for this job:
       - run: make clean
       - run: npm ci
