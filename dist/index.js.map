@@ -1,1 +1,1 @@
-{"version":3,"file":"index.js","sources":["../src/entrypoint.ts"],"sourcesContent":[null],"names":[],"mappings":";;AAAA,MAAA,UAAA,GAAA,OAAA,CAAA,YAAA,CAAA,OAAA,CAAA,cAAA,CAAA,CAAA;AAEA,UAAU,CAAC,oBAAoB,EAAE"}
+{"version":3,"file":"index.js","sources":["../src/entrypoint.ts"],"sourcesContent":["import * as start_here from './start_here'\n\nstart_here.main_function_run_me()\n"],"names":[],"mappings":";;AAAA,MAAA,UAAA,GAAA,OAAA,CAAA,YAAA,CAAA,OAAA,CAAA,cAAA,CAAA,CAAA;AAEA,UAAU,CAAC,oBAAoB,EAAE"}
