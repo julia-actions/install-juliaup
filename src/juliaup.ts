@@ -1,6 +1,6 @@
 // npm packages that are part of the GitHub Actions toolkit
 const core = require('./@actions/core');
-import * as tc from '@actions/tool-cache'
+const tc = require('./@actions/tool-cache');
 
 // Other npm packages
 import retry = require('async-retry')
