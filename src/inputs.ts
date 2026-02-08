@@ -1,5 +1,5 @@
 // npm packages that are part of the GitHub Actions toolkit
-import * as core from '@actions/core'
+const core = require('./@actions/core');
 
 export function get_juliaup_channel_input() {
     const input_name = 'channel'
