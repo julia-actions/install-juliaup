@@ -45,7 +45,7 @@ jobs:
           - ubuntu-latest
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       ### Cleanall:
@@ -82,7 +82,7 @@ jobs:
       fail-fast: false
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       ### Cleanall:
@@ -126,7 +126,7 @@ jobs:
           - macos-15-intel # Intel
           - macos-latest # Apple Silicon
     steps:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       - name: '[before] Print some output for debugging purposes'
@@ -172,7 +172,7 @@ jobs:
   #     fail-fast: false
   #   steps:
   #       ### Check out the repo:
-  #       - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871
+  #       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
   #         with:
   #           persist-credentials: false
   #       ### Install mise-en-place
@@ -191,7 +191,7 @@ jobs:
           - ubuntu-latest
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       ### Cleanall:
@@ -229,7 +229,7 @@ jobs:
       fail-fast: false
     steps:
       ### Check out the repo:
-      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
       ### Install mise-en-place
