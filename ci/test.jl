@@ -30,28 +30,69 @@ function get_expected_platform()
     return platform
 end
 
-function get_expected_path(; EXPECTED_VERSION)
-    expected_exename = get_expected_exename()
-    expected_platform = get_expected_platform()
+@static if Sys.isapple()
+    function get_expected_paths(; EXPECTED_VERSION)
+        expected_exename = get_expected_exename()
+        expected_platform = get_expected_platform()
+        expected_version_vn = VersionNumber(EXPECTED_VERSION)
+        expected_version_majmin_str = "$(expected_version_vn.major).$(expected_version_vn.minor)"
+    
+        expected_path1 = joinpath(
+            homedir(),
+            ".julia",
+            "juliaup",
+            "julia-$(EXPECTED_VERSION)+0.$(expected_platform)",
+            "bin",
+            expected_exename,
+        )
+        # expected_path2 is possible after https://github.com/JuliaLang/juliaup/pull/1320
+        expected_path2 = joinpath(
+            homedir(),
+            ".julia",
+            "juliaup",
+            "julia-$(EXPECTED_VERSION)+0.$(expected_platform)",
+            "Julia-$(expected_version_majmin_str).app",
+            "Contents",
+            "Resources",
+            "julia",
+            "bin",
+            expected_exename,
+        )
+        expected_paths = [expected_path1, expected_path2]
 
-    expected_path = joinpath(
-        homedir(),
-        ".julia",
-        "juliaup",
-        "julia-$(EXPECTED_VERSION)+0.$(expected_platform)",
-        "bin",
-        expected_exename,
-    )
+        return expected_paths
+    end
+else
+    function get_expected_path(; EXPECTED_VERSION)
+        expected_exename = get_expected_exename()
+        expected_platform = get_expected_platform()
 
-    return expected_path
+        expected_path = joinpath(
+            homedir(),
+            ".julia",
+            "juliaup",
+            "julia-$(EXPECTED_VERSION)+0.$(expected_platform)",
+            "bin",
+            expected_exename,
+        )
+
+        return expected_path
+    end
 end
+
+
 
 @testset begin
     observed_julia_cmd = Base.julia_cmd()
     observed_path = observed_julia_cmd.exec[1]
 
     EXPECTED_VERSION = strip(ENV["EXPECTED_JULIA_VERSION_FOR_TESTS"])
-    expected_path = get_expected_path(; EXPECTED_VERSION)
 
-    @test observed_path == expected_path
+    @static if Sys.isapple()
+        expected_paths = get_expected_paths(; EXPECTED_VERSION)
+        @test observed_path ∈ expected_paths
+    else
+        expected_path = get_expected_path(; EXPECTED_VERSION)
+        @test observed_path == expected_path
+    end
 end
