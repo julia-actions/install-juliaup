@@ -158,6 +158,7 @@ jobs:
           which -a julia
           julia --version
           julia -e 'import InteractiveUtils; InteractiveUtils.versioninfo()'
+          julia -e '@info "" Sys.BINDIR Base.julia_cmd()'
           which -a juliaup
           juliaup --version
       - name: '[after] Print some more debugging output'
