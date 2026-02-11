@@ -5,10 +5,14 @@ inputs:
   channel:
     description: 'The Juliaup channel to install (and set as the default channel).'
     required: true
-  internal-juliaup-version:
-    description: '[private internal]. The Juliaup version to install. This is not part of the public API of this action.'
+  token:
+    description: 'GitHub token to use when contacting the GitHub API to fetch the list of Juliaup versions'
     required: false
-    default: '1.19.4' # Update this value whenever a new release of Juliaup is made.
+    default: ${{ github.token }}
+  juliaup-version:
+    description: 'The Juliaup version to install. Defaults to "1", which expands to the latest available 1.x.y version of Juliaup.'
+    required: false
+    default: '1'
 runs:
   using: 'node24'
   main: 'dist/index.js'
