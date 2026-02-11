@@ -10,9 +10,9 @@ inputs:
     required: false
     default: ${{ github.token }}
   juliaup-version:
-    description: 'The Juliaup version to install. Defaults to latest-v1, which expands to the latest available 1.x.y version of Juliaup.'
+    description: 'The Juliaup version to install. Defaults to "1", which expands to the latest available 1.x.y version of Juliaup.'
     required: false
-    default: 'latest-v1'
+    default: '1'
 runs:
   using: 'node24'
   main: 'dist/index.js'
