@@ -84,6 +84,12 @@ async function _get_stable_juliaup_releases() {
     // We need to exclude pre-releases:
     const stable_releases = all_releases.filter(x => !x.prerelease)
 
+    // Exclude any release that we can't parse as a semver-formatted version number
+    for (const rel of stable_releases) {
+        if (!semver.parse(rel.name)) {
+            core.error(`Could not parse release as semver version: ${rel.name}`);
+        }
+    }
     const stable_tags_semver = stable_releases
         .map(x => semver.parse(x.name))
         .filter((parsed_version): parsed_version is semver.SemVer => parsed_version !== null)
