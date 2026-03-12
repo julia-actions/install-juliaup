@@ -75,7 +75,7 @@
     "@types/which": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.39.4",
     "eslint-plugin-github": "^6.0.0",
     "eslint-plugin-jest": "^29.15.0",
     "eslint-plugin-jsonc": "^2.15.0",
