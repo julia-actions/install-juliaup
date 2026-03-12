@@ -108,7 +108,7 @@ async function download_and_extract_juliaup_to_temp_dir(juliaup_version: string)
     //
     // Occasionally the connection is reset for unknown reasons.
     // In those cases, retry the download.
-    const tarball_download_path = await retry(async (bail: Function) => {
+    const tarball_download_path = await retry(async () => {
         return await tc.downloadTool(tarball_download_url)
     }, {
         retries: 5,

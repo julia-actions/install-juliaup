@@ -23588,45 +23588,38 @@ function isNonEmptyString(str) {
 var os6 = __toESM(require("os"), 1);
 var path5 = __toESM(require("path"), 1);
 function get_juliaup(info2) {
-  if (os6.platform() === "win32") {
-    var juliaup_exename = "juliaup.exe";
-  } else {
-    var juliaup_exename = "juliaup";
-  }
+  const juliaup_exename = os6.platform() === "win32" ? "juliaup.exe" : "juliaup";
   const juliaup = path5.join(info2.juliaup_dir, juliaup_exename);
   return juliaup;
 }
 function get_julialauncher(info2) {
-  if (os6.platform() === "win32") {
-    var julialauncher_exename = "julia.exe";
-  } else {
-    var julialauncher_exename = "julia";
-  }
+  const julialauncher_exename = os6.platform() === "win32" ? "julia.exe" : "julia";
   const julia = path5.join(info2.juliaup_dir, julialauncher_exename);
   return julia;
 }
 function get_platform_triplet() {
   const operating_system = os6.platform();
   const arch3 = process.arch;
+  let triplet;
   if (operating_system === "win32") {
     if (arch3 === "x64") {
-      var triplet = "x86_64-pc-windows-gnu";
+      triplet = "x86_64-pc-windows-gnu";
     } else {
       throw new Error(`We do not support the "${arch3}" arch on the "${operating_system}" OS`);
     }
   } else if (operating_system === "linux") {
     if (arch3 === "x64") {
-      var triplet = "x86_64-unknown-linux-musl";
+      triplet = "x86_64-unknown-linux-musl";
     } else if (arch3 === "arm64") {
-      var triplet = "aarch64-unknown-linux-musl";
+      triplet = "aarch64-unknown-linux-musl";
     } else {
       throw new Error(`We do not support the "${arch3}" arch on the "${operating_system}" OS`);
     }
   } else if (operating_system === "darwin") {
     if (arch3 === "x64") {
-      var triplet = "x86_64-apple-darwin";
+      triplet = "x86_64-apple-darwin";
     } else if (arch3 === "arm64") {
-      var triplet = "aarch64-apple-darwin";
+      triplet = "aarch64-apple-darwin";
     } else {
       throw new Error(`We do not support the "${arch3}" arch on the "${operating_system}" OS`);
     }
@@ -27782,7 +27775,7 @@ async function _get_stable_juliaup_releases() {
 async function download_and_extract_juliaup_to_temp_dir(juliaup_version) {
   const tarball_download_url = await _construct_juliaup_tarball_download_url(juliaup_version);
   info(`Attempting to download Juliaup from: ${tarball_download_url}`);
-  const tarball_download_path = await (0, import_async_retry.default)(async (bail) => {
+  const tarball_download_path = await (0, import_async_retry.default)(async () => {
     return await downloadTool(tarball_download_url);
   }, {
     retries: 5,
