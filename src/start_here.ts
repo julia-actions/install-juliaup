@@ -11,10 +11,10 @@ import * as which from 'which'
 // import * as path from 'path'
 
 // Our own source code files
-import * as inputs from './inputs'
-import * as julia from './julia'
-import * as juliaup from './juliaup'
-import * as platform from './platform'
+import * as inputs from './inputs.js'
+import * as julia from './julia.js'
+import * as juliaup from './juliaup.js'
+import * as platform from './platform.js'
 
 export async function main_function_run_me() {
     // Step 1: Make sure all required inputs are provided.

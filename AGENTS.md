@@ -2,9 +2,9 @@
 
 ## Project Structure & Module Organization
 
-Core source lives in `src/` and is compiled to `lib/` with TypeScript. The GitHub Action bundle checked into releases is `dist/index.js`, generated with `ncc`. Repository metadata and runtime inputs are defined in `action.yml`. CI and integration validation live in `.github/workflows/` and `ci/test.jl`. Helper scripts are under `bin/`, and contributor notes are in `devdocs/`.
+Core source lives in `src/` and is compiled to `lib/` with TypeScript. The GitHub Action bundle checked into releases is `dist/index.js`, generated with `tsup`. Repository metadata and runtime inputs are defined in `action.yml`. CI and integration validation live in `.github/workflows/` and `ci/test.jl`. Helper scripts are under `bin/`, and contributor notes are in `devdocs/`.
 
-Treat `lib/` and `dist/` as generated outputs: when behavior changes in `src/`, rebuild and commit the updated artifacts.
+Treat `lib/` and `dist/` as generated outputs: when behavior changes in `src/`, rebuild and commit the updated artifacts. The action bundle must remain a single self-contained `dist/index.js`; if you touch the bundler config, verify runtime dependencies are not being externalized into separate files.
 
 ## Build, Test, and Development Commands
 
@@ -21,6 +21,8 @@ Use the `Makefile` wrappers documented in `devdocs/local_setup.md`:
 
 This project uses TypeScript with strict compiler settings from `tsconfig.json` and ESLint via `.eslintrc.cjs`. Follow the existing style: 4-space indentation, LF line endings, and simple module-level functions. Source files use lowercase names such as `juliaup.ts` and `platform.ts`; many internal helpers use snake_case names to match the current codebase.
 
+This repo uses ESM with `moduleResolution: "NodeNext"`. Local TypeScript imports in `src/` should use explicit `.js` extensions, and `tsconfig.json` should keep compilation scoped to `src/` so tool configs do not leak into `lib/`.
+
 If you run linting manually, use `npx eslint .`. Prefer small, direct functions over abstractions.
 
 ## Testing Guidelines
@@ -31,10 +33,12 @@ Before opening a PR, run at least `make build` and `make pack`, then confirm the
 
 ## Commit & Pull Request Guidelines
 
-Use imperative commit subjects, for example `Update README to reflect...`. Keep commits focused and descriptive.
+Use imperative commit subjects, for example `Update README to reflect...`. Keep commits focused and descriptive. When a change touches both source/configuration and generated outputs, prefer separate commits so reviewers can inspect the handwritten changes without diff noise from `lib/` and `dist/`.
 
 Whenever an AI tool such as OpenAI Codex or Anthropic Claude Code creates a commit, it must add itself as a co-author by including a `Co-authored-by:` trailer in the commit message.
 
 Whenever an AI tool such as OpenAI Codex or Anthropic Claude Code writes a pull request body or opens a pull request, the pull request body must mention the AI tool as a co-author of the pull request.
+
+When using `gh` to open or edit PRs, prefer `--body-file` over inline `--body` strings so Markdown backticks and paths are not mangled by shell interpolation. If `gh pr edit` fails because the local token is missing scopes, use `gh api` against the pull request REST endpoint instead of leaving the PR metadata half-updated.
 
 PRs should explain the user-visible change, link any related issue, and note how you validated the update. For source changes, include regenerated `lib/` and `dist/` files so CI’s checked-in-files job stays green.
