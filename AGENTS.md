@@ -23,7 +23,7 @@ This project uses TypeScript with strict compiler settings from `tsconfig.json` 
 
 This repo uses ESM with `moduleResolution: "NodeNext"`. Local TypeScript imports in `src/` should use explicit `.js` extensions, and `tsconfig.json` should keep compilation scoped to `src/` so tool configs do not leak into `lib/`.
 
-If you run linting manually, use `npm run lint`. Prefer small, direct functions over abstractions.
+If you run linting manually, use `npm run lint`; it runs both `tsc --noEmit` and ESLint. Prefer small, direct functions over abstractions.
 
 ## Testing Guidelines
 
