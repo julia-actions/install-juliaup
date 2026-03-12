@@ -63,6 +63,12 @@ async function _get_latest_v1_juliaup_version() {
     const stable_tags_semver = await _get_stable_juliaup_releases()
     const desired_semver_spec = '^1.0.0'
     const result_semver = semver.maxSatisfying(stable_tags_semver, desired_semver_spec)
+    if (!result_semver) {
+        // null is a falsy value
+        // undefined is a falsy value
+        throw new Error('result_semver was unexpectedly falsy');
+    }
+    // The ! asserts that result_semver is not null
     const result_version_string = result_semver!.version
     return result_version_string
 }
