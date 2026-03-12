@@ -83,7 +83,6 @@
     "jest": "^30.3.0",
     "make-coverage-badge": "^1.2.0",
     "prettier": "^3.2.5",
-    "prettier-eslint": "^16.3.0",
     "ts-jest": "^29.1.2",
     "tsup": "^8.5.0",
     "typescript": "^5.4.4"
