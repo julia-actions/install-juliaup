@@ -2,7 +2,7 @@
   "name": "install-juliaup",
   "description": "GitHub Action to install juliaup",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "author": "julia-actions organization, contributors",
   "private": true,
   "homepage": "https://github.com/julia-actions/install-juliaup",
@@ -19,7 +19,7 @@
     "setup"
   ],
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.cjs"
   },
   "engines": {
     "node": ">=24.0.0 <25.0.0"

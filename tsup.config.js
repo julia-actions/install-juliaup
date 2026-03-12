@@ -6,9 +6,14 @@ export default defineConfig({
     entry: {
         index: 'src/entrypoint.ts'
     },
-    format: ['esm'],
+    format: ['cjs'],
     minify: false,
     noExternal: [/.*/],
+    outExtension() {
+        return {
+            js: '.cjs'
+        }
+    },
     outDir: 'dist',
     platform: 'node',
     sourcemap: false,
