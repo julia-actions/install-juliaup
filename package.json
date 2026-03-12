@@ -26,6 +26,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "lint": "eslint src/**/*.ts eslint.config.js tsup.config.js",
     "pack": "tsup"
   },
   "license": "MIT",
