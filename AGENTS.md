@@ -31,7 +31,7 @@ Before opening a PR, run at least `make build` and `make pack`, then confirm the
 
 ## Commit & Pull Request Guidelines
 
-Recent history favors short, imperative commit subjects, often with a PR number, for example `Update README to reflect... (#142)`. Keep commits focused and descriptive.
+Recent history favors short, imperative commit subjects, for example `Update README to reflect...`. Keep commits focused and descriptive.
 
 Whenever an AI tool such as OpenAI Codex or Anthropic Claude Code creates a commit, it must add itself as a co-author by including a `Co-authored-by:` trailer in the commit message.
 
