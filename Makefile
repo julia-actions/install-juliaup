@@ -35,9 +35,9 @@ cleanall: clean
 
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-# .PHONY: check-lint
-# check-lint:
-# 	npx eslint .
+.PHONY: check-lint
+check-lint:
+	npm run lint
 
 # .PHONY: fix-lint
 # fix-lint:

@@ -18,12 +18,13 @@ jobs:
     if: always() # this line is important to keep the `finalize` job from being marked as skipped; do not change or delete this line
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [build, checked-in-files, example, make-targets, stalecheck-npm-install]
+    needs: [build, checked-in-files, example, lint-check, make-targets, stalecheck-npm-install]
     steps:
       - run: |
           echo build: ${{ needs.build.result }}
           echo checked-in-files: ${{ needs.checked-in-files.result }}
           echo example: ${{ needs.example.result }}
+          echo lint-check: ${{ needs.lint-check.result }}
           echo make-targets: ${{ needs.make-targets.result }}
           echo stalecheck-npm-install: ${{ needs.stalecheck-npm-install.result }}
       # The last line must NOT end with ||
@@ -33,6 +34,7 @@ jobs:
           (needs.build.result != 'success') ||
           (needs.checked-in-files.result != 'success') ||
           (needs.example.result != 'success') ||
+          (needs.lint-check.result != 'success') ||
           (needs.make-targets.result != 'success') ||
           (needs.stalecheck-npm-install.result != 'success')
   build:
@@ -167,22 +169,24 @@ jobs:
           cmd = Base.julia_cmd()
           julia_path = cmd.exec[1]
           @info "" julia_path Base.VERSION
-  # lint-check:
-  #   timeout-minutes: 30
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #   steps:
-  #       ### Check out the repo:
-  #       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-  #         with:
-  #           persist-credentials: false
-  #       ### Install mise-en-place
-  #       - uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
-  #       ### Install NodeJS (by using mise-en-place)
-  #       - run: make mise-install
-  #       ### Lint:
-  #       - run: make check-lint
+  lint-check:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      ### Check out the repo:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      ### Install mise-en-place
+      - uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3.6.3
+      ### Install NodeJS (by using mise-en-place)
+      - run: make mise-install
+      ### Install the NodeJS packages that we depend on:
+      - run: make install-packages
+      ### Lint:
+      - run: make check-lint
   make-targets: # This is a job to make sure that none of the `make` targets bitrot
     timeout-minutes: 30
     runs-on: ${{ matrix.os }}
