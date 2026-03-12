@@ -35,4 +35,6 @@ Recent history favors short, imperative commit subjects, often with a PR number,
 
 Whenever an AI tool such as OpenAI Codex or Anthropic Claude Code creates a commit, it must add itself as a co-author by including a `Co-authored-by:` trailer in the commit message.
 
+Whenever an AI tool such as OpenAI Codex or Anthropic Claude Code writes a pull request body or opens a pull request, the pull request body must mention the AI tool as a co-author of the pull request.
+
 PRs should explain the user-visible change, link any related issue, and note how you validated the update. For source changes, include regenerated `lib/` and `dist/` files so CI’s checked-in-files job stays green.
