@@ -3,8 +3,8 @@
 import * as exec from '@actions/exec'
 
 // Our own source code files
-import * as inputs from './inputs'
-import * as platform from './platform'
+import * as inputs from './inputs.js'
+import * as platform from './platform.js'
 
 export async function install_desired_juliaup_channel(info: { juliaup_dir: string}) {
     // Install the Julia desired version, and set it as the default.

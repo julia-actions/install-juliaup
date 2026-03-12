@@ -5,13 +5,12 @@ import * as octokit from '@actions/github'
 import * as tc from '@actions/tool-cache'
 
 // Other npm packages
-const retry = require('async-retry')
-const semver = require('semver')
-const semverMaxSatisfying = require('semver/ranges/max-satisfying')
+import retry from 'async-retry'
+import semver from 'semver'
 
 // Our own source code files
-import * as inputs from './inputs'
-import * as platform from './platform'
+import * as inputs from './inputs.js'
+import * as platform from './platform.js'
 
 export async function ensure_juliaup_is_installed() {
     // 1. Determine which version of Juliaup to use.
@@ -64,7 +63,7 @@ async function _get_latest_v1_juliaup_version() {
     const stable_tags_semver = await _get_stable_juliaup_releases()
     const desired_semver_spec = '^1.0.0'
     const result_semver = semver.maxSatisfying(stable_tags_semver, desired_semver_spec)
-    const result_version_string = result_semver.version
+    const result_version_string = result_semver!.version
     return result_version_string
 }
 
@@ -79,7 +78,9 @@ async function _get_stable_juliaup_releases() {
     // We need to exclude pre-releases:
     const stable_releases = all_releases.filter(x => !x.prerelease)
 
-    const stable_tags_semver = stable_releases.map(x => semver.parse(x.name))
+    const stable_tags_semver = stable_releases
+        .map(x => semver.parse(x.name))
+        .filter((parsed_version): parsed_version is semver.SemVer => parsed_version !== null)
     return stable_tags_semver
 }
 
