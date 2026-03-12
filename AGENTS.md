@@ -33,4 +33,6 @@ Before opening a PR, run at least `make build` and `make pack`, then confirm the
 
 Recent history favors short, imperative commit subjects, often with a PR number, for example `Update README to reflect... (#142)`. Keep commits focused and descriptive.
 
+Whenever an AI tool such as OpenAI Codex or Anthropic Claude Code creates a commit, it must add itself as a co-author by including a `Co-authored-by:` trailer in the commit message.
+
 PRs should explain the user-visible change, link any related issue, and note how you validated the update. For source changes, include regenerated `lib/` and `dist/` files so CI’s checked-in-files job stays green.
