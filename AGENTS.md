@@ -27,7 +27,7 @@ If you run linting manually, use `npm run lint`. Prefer small, direct functions 
 
 ## Testing Guidelines
 
-CI currently emphasizes build correctness and end-to-end validation. The main integration check is `julia ci/test.jl`, run after the local action installs Julia on the GitHub runner. If you add TypeScript unit tests, place them beside the source or in a matching test location with names ending in `*.test.ts`; Jest is already configured in `package.json`, so `npx jest --coverage` will pick them up.
+CI currently emphasizes build correctness and end-to-end validation. The main integration check is `julia ci/test.jl`, run after the local action installs Julia on the GitHub runner. If you add TypeScript unit tests, place them beside the source or in a matching test location with names ending in `*.test.ts`, and document any new test runner setup in `package.json` and this file.
 
 Before opening a PR, run at least `npm run lint`, `make build`, and `make pack`, then confirm there are no unintended diffs.
 

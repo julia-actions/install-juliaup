@@ -1,6 +1,5 @@
 import js from '@eslint/js'
 import github from 'eslint-plugin-github'
-import jest from 'eslint-plugin-jest'
 import jsonc from 'eslint-plugin-jsonc'
 import prettier from 'eslint-plugin-prettier'
 import tseslint from '@typescript-eslint/eslint-plugin'
@@ -38,10 +37,6 @@ export default [
         rules: {
             ...tseslint.configs.recommended.rules
         }
-    },
-    {
-        ...jest.configs['flat/recommended'],
-        files: ['**/*.test.ts']
     },
     ...jsonc.configs['flat/recommended-with-jsonc'],
     {
