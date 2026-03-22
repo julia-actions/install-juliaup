@@ -53,7 +53,7 @@ jobs:
       ### Cleanall:
       - run: make cleanall
       ### Install mise-en-place
-      - uses: jdx/mise-action@c1ecc8f748cd28cdeabf76dab3cccde4ce692fe4 # v4.0.0
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
       ### Install NodeJS (by using mise-en-place)
       - run: make mise-install
       ### Install the NodeJS packages that we depend on:
@@ -90,7 +90,7 @@ jobs:
       ### Cleanall:
       - run: make cleanall
       ### Install mise-en-place
-      - uses: jdx/mise-action@c1ecc8f748cd28cdeabf76dab3cccde4ce692fe4 # v4.0.0
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
       ### Install NodeJS (by using mise-en-place)
       - run: make mise-install
       ### Install the NodeJS packages that we depend on:
@@ -180,7 +180,7 @@ jobs:
         with:
           persist-credentials: false
       ### Install mise-en-place
-      - uses: jdx/mise-action@c1ecc8f748cd28cdeabf76dab3cccde4ce692fe4 # v4.0.0
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
       ### Install NodeJS (by using mise-en-place)
       - run: make mise-install
       ### Install the NodeJS packages that we depend on:
@@ -203,7 +203,7 @@ jobs:
       ### Cleanall:
       - run: make cleanall
       ### Install mise-en-place
-      - uses: jdx/mise-action@c1ecc8f748cd28cdeabf76dab3cccde4ce692fe4 # v4.0.0
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
       ### Install NodeJS (by using mise-en-place)
       - run: make mise-install
       ### Install the NodeJS packages that we depend on:
@@ -239,7 +239,7 @@ jobs:
         with:
           persist-credentials: false
       ### Install mise-en-place
-      - uses: jdx/mise-action@c1ecc8f748cd28cdeabf76dab3cccde4ce692fe4 # v4.0.0
+      - uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
       ### Install NodeJS (by using mise-en-place)
       - run: make mise-install
       ### Run the main commands for this job:
