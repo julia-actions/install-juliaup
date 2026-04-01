@@ -12,7 +12,8 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "newLine": "lf"
+    "newLine": "lf",
+    "types": ["node"]
   },
   "include": ["./src/**/*.ts"],
   "exclude": ["./dist", "./node_modules", "./__tests__", "./coverage"]
