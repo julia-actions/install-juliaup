@@ -30,7 +30,7 @@ jobs:
           - ubuntu-latest
     steps:
       # We use Dependabot to automatically update the following line:
-      - uses: julia-actions/install-juliaup@e5814609d43f8ff2d39d00d91eac5f69e8a4f15a # v3.1.1
+      - uses: julia-actions/install-juliaup@645c8ab13ebf407f60a7f298c4102eb7e2145094 # v3.1.2
         with:
           channel: '1'
       - run: julia --version
@@ -45,7 +45,7 @@ jobs:
           - ubuntu-latest
     steps:
       # We use Dependabot to automatically update the following line:
-      - uses: julia-actions/install-juliaup@v3.1.1
+      - uses: julia-actions/install-juliaup@v3.1.2
         with:
           channel: '1'
       - run: julia --version
