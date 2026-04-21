@@ -13,6 +13,15 @@ inputs:
     description: 'The Juliaup version to install. Defaults to "1", which expands to the latest available 1.x.y version of Juliaup.'
     required: false
     default: '1'
+  add-to-path:
+    description: 'Whether to add Juliaup and Julia to the PATH.'
+    required: false
+    default: 'true'
+outputs:
+  juliaup-path:
+    description: 'The absolute path to the juliaup executable.'
+  julialauncher-path:
+    description: 'The absolute path to the julialauncher executable.'
 runs:
   using: 'node24'
   main: 'dist/index.cjs'
