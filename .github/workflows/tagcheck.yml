@@ -20,36 +20,6 @@ concurrency:
 permissions:
   contents: read
 jobs:
-  tagcheck-hash:
-    timeout-minutes: 10
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-    steps:
-      # We use Dependabot to automatically update the following line:
-      - uses: julia-actions/install-juliaup@645c8ab13ebf407f60a7f298c4102eb7e2145094 # v3.1.2
-        with:
-          channel: '1'
-      - run: julia --version
-      - run: julia -e 'import InteractiveUtils; InteractiveUtils.versioninfo()'
-  tagcheck-version:
-    timeout-minutes: 10
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-    steps:
-      # We use Dependabot to automatically update the following line:
-      - uses: julia-actions/install-juliaup@v3.1.2
-        with:
-          channel: '1'
-      - run: julia --version
-      - run: julia -e 'import InteractiveUtils; InteractiveUtils.versioninfo()'
   tagcheck-convenience:
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
