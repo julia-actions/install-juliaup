@@ -23,6 +23,20 @@ To install the latest stable Julia v1:
 - run: julia --version
 ```
 
+To install Juliaup without modifying the PATH:
+
+```yaml
+- uses: julia-actions/install-juliaup@v3
+  id: install-juliaup
+  with:
+    channel: '1'
+    add-to-path: false
+
+# Now you can use the outputs as:
+# ${{ steps.install-juliaup.outputs.julialauncher-path }}
+# ${{ steps.install-juliaup.outputs.juliaup-path }}
+```
+
 Note: this uses the default `GITHUB_TOKEN` to authenticate read-only calls to the GitHub API. To use a different token, provide it in the optional `token` input:
 
 ```yaml
@@ -89,6 +103,11 @@ When the `install-juliaup` action runs, it adds `juliaup` to the PATH. Therefore
 - run: juliaup default 1.10
 - run: juliaup status
 ```
+
+## Outputs
+
+- `juliaup-path`: The absolute path to the `juliaup` executable.
+- `julialauncher-path`: The absolute path to the Julia launcher executable.
 
 ## Using Dependabot version updates to keep your GitHub Actions up to date
 

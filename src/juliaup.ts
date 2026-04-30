@@ -15,6 +15,7 @@ import * as platform from './platform.js'
 export async function ensure_juliaup_is_installed() {
     // 1. Determine which version of Juliaup to use.
     const juliaup_version = await _decide_juliaup_version_from_input()
+    const add_to_path = inputs.get_add_to_path_input()
 
     let juliaup_dir: string
 
@@ -39,7 +40,9 @@ export async function ensure_juliaup_is_installed() {
     }
 
     // 4. Add Juliaup (and thus also Julialauncher) to the PATH.
-    await core.addPath(juliaup_dir)
+    if (add_to_path) {
+        await core.addPath(juliaup_dir)
+    }
 
     const info = {
         juliaup_dir

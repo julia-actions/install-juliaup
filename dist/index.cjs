@@ -4007,11 +4007,11 @@ var require_util2 = __commonJS({
     var { isUint8Array } = require("util/types");
     var { webidl } = require_webidl();
     var supportedHashes = [];
-    var crypto2;
+    var crypto3;
     try {
-      crypto2 = require("crypto");
+      crypto3 = require("crypto");
       const possibleRelevantHashes = ["sha256", "sha384", "sha512"];
-      supportedHashes = crypto2.getHashes().filter((hash) => possibleRelevantHashes.includes(hash));
+      supportedHashes = crypto3.getHashes().filter((hash) => possibleRelevantHashes.includes(hash));
     } catch {
     }
     function responseURL(response) {
@@ -4284,7 +4284,7 @@ var require_util2 = __commonJS({
       }
     }
     function bytesMatch(bytes, metadataList) {
-      if (crypto2 === void 0) {
+      if (crypto3 === void 0) {
         return true;
       }
       const parsedMetadata = parseMetadata(metadataList);
@@ -4299,7 +4299,7 @@ var require_util2 = __commonJS({
       for (const item of metadata) {
         const algorithm = item.algo;
         const expectedValue = item.hash;
-        let actualValue = crypto2.createHash(algorithm).update(bytes).digest("base64");
+        let actualValue = crypto3.createHash(algorithm).update(bytes).digest("base64");
         if (actualValue[actualValue.length - 1] === "=") {
           if (actualValue[actualValue.length - 2] === "=") {
             actualValue = actualValue.slice(0, -2);
@@ -5363,8 +5363,8 @@ var require_body = __commonJS({
     var { multipartFormDataParser } = require_formdata_parser();
     var random;
     try {
-      const crypto2 = require("crypto");
-      random = (max) => crypto2.randomInt(0, max);
+      const crypto3 = require("crypto");
+      random = (max) => crypto3.randomInt(0, max);
     } catch {
       random = (max) => Math.floor(Math.random(max));
     }
@@ -16776,13 +16776,13 @@ var require_frame = __commonJS({
     "use strict";
     var { maxUnsigned16Bit } = require_constants5();
     var BUFFER_SIZE = 16386;
-    var crypto2;
+    var crypto3;
     var buffer = null;
     var bufIdx = BUFFER_SIZE;
     try {
-      crypto2 = require("crypto");
+      crypto3 = require("crypto");
     } catch {
-      crypto2 = {
+      crypto3 = {
         // not full compatibility, but minimum.
         randomFillSync: function randomFillSync(buffer2, _offset, _size) {
           for (let i = 0; i < buffer2.length; ++i) {
@@ -16795,7 +16795,7 @@ var require_frame = __commonJS({
     function generateMask() {
       if (bufIdx === BUFFER_SIZE) {
         bufIdx = 0;
-        crypto2.randomFillSync(buffer ??= Buffer.allocUnsafe(BUFFER_SIZE), 0, BUFFER_SIZE);
+        crypto3.randomFillSync(buffer ??= Buffer.allocUnsafe(BUFFER_SIZE), 0, BUFFER_SIZE);
       }
       return [buffer[bufIdx++], buffer[bufIdx++], buffer[bufIdx++], buffer[bufIdx++]];
     }
@@ -16867,9 +16867,9 @@ var require_connection = __commonJS({
     var { Headers: Headers2, getHeadersList } = require_headers();
     var { getDecodeSplit } = require_util2();
     var { WebsocketFrameSend } = require_frame();
-    var crypto2;
+    var crypto3;
     try {
-      crypto2 = require("crypto");
+      crypto3 = require("crypto");
     } catch {
     }
     function establishWebSocketConnection(url, protocols, client, ws, onEstablish, options) {
@@ -16889,7 +16889,7 @@ var require_connection = __commonJS({
         const headersList = getHeadersList(new Headers2(options.headers));
         request2.headersList = headersList;
       }
-      const keyValue = crypto2.randomBytes(16).toString("base64");
+      const keyValue = crypto3.randomBytes(16).toString("base64");
       request2.headersList.append("sec-websocket-key", keyValue);
       request2.headersList.append("sec-websocket-version", "13");
       for (const protocol of protocols) {
@@ -16919,7 +16919,7 @@ var require_connection = __commonJS({
             return;
           }
           const secWSAccept = response.headersList.get("Sec-WebSocket-Accept");
-          const digest = crypto2.createHash("sha1").update(keyValue + uid).digest("base64");
+          const digest = crypto3.createHash("sha1").update(keyValue + uid).digest("base64");
           if (secWSAccept !== digest) {
             failWebsocketConnection(ws, "Incorrect hash received in Sec-WebSocket-Accept header.");
             return;
@@ -21781,6 +21781,7 @@ function escapeProperty(s) {
 }
 
 // node_modules/@actions/core/lib/file-command.js
+var crypto = __toESM(require("crypto"), 1);
 var fs = __toESM(require("fs"), 1);
 var os2 = __toESM(require("os"), 1);
 function issueFileCommand(command, message) {
@@ -21794,6 +21795,17 @@ function issueFileCommand(command, message) {
   fs.appendFileSync(filePath, `${toCommandValue(message)}${os2.EOL}`, {
     encoding: "utf8"
   });
+}
+function prepareKeyValueMessage(key, value) {
+  const delimiter3 = `ghadelimiter_${crypto.randomUUID()}`;
+  const convertedValue = toCommandValue(value);
+  if (key.includes(delimiter3)) {
+    throw new Error(`Unexpected input: name should not contain the delimiter "${delimiter3}"`);
+  }
+  if (convertedValue.includes(delimiter3)) {
+    throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter3}"`);
+  }
+  return `${key}<<${delimiter3}${os2.EOL}${convertedValue}${os2.EOL}${delimiter3}`;
 }
 
 // node_modules/@actions/core/lib/core.js
@@ -23645,6 +23657,25 @@ function getInput(name, options) {
   }
   return val.trim();
 }
+function getBooleanInput(name, options) {
+  const trueValue = ["true", "True", "TRUE"];
+  const falseValue = ["false", "False", "FALSE"];
+  const val = getInput(name, options);
+  if (trueValue.includes(val))
+    return true;
+  if (falseValue.includes(val))
+    return false;
+  throw new TypeError(`Input does not meet YAML 1.2 "Core Schema" specification: ${name}
+Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
+}
+function setOutput(name, value) {
+  const filePath = process.env["GITHUB_OUTPUT"] || "";
+  if (filePath) {
+    return issueFileCommand("OUTPUT", prepareKeyValueMessage(name, value));
+  }
+  process.stdout.write(os5.EOL);
+  issueCommand("set-output", { name }, toCommandValue(value));
+}
 function isDebug() {
   return process.env["RUNNER_DEBUG"] === "1";
 }
@@ -23694,6 +23725,10 @@ function get_github_token_input() {
     throw new Error(`You trimmed_input specify a value for the ${input_name} input`);
   }
   return trimmed_input;
+}
+function get_add_to_path_input() {
+  const input_name = "add-to-path";
+  return getBooleanInput(input_name);
 }
 function isNonEmptyString(str) {
   const result = str && str.length > 0;
@@ -27501,7 +27536,7 @@ function getOctokit(token, options, ...additionalPlugins) {
 }
 
 // node_modules/@actions/tool-cache/lib/tool-cache.js
-var crypto = __toESM(require("crypto"), 1);
+var crypto2 = __toESM(require("crypto"), 1);
 var fs3 = __toESM(require("fs"), 1);
 
 // node_modules/@actions/tool-cache/lib/manifest.js
@@ -27625,7 +27660,7 @@ var IS_MAC = process.platform === "darwin";
 var userAgent2 = "actions/tool-cache";
 function downloadTool(url, dest, auth2, headers) {
   return __awaiter9(this, void 0, void 0, function* () {
-    dest = dest || path6.join(_getTempDirectory(), crypto.randomUUID());
+    dest = dest || path6.join(_getTempDirectory(), crypto2.randomUUID());
     yield mkdirP(path6.dirname(dest));
     debug(`Downloading ${url}`);
     debug(`Destination ${dest}`);
@@ -27795,7 +27830,7 @@ function findAllVersions(toolName, arch3) {
 function _createExtractFolder(dest) {
   return __awaiter9(this, void 0, void 0, function* () {
     if (!dest) {
-      dest = path6.join(_getTempDirectory(), crypto.randomUUID());
+      dest = path6.join(_getTempDirectory(), crypto2.randomUUID());
     }
     yield mkdirP(dest);
     return dest;
@@ -27869,6 +27904,7 @@ var import_async_retry = __toESM(require_lib2(), 1);
 var import_semver = __toESM(require_semver2(), 1);
 async function ensure_juliaup_is_installed() {
   const juliaup_version = await _decide_juliaup_version_from_input();
+  const add_to_path = get_add_to_path_input();
   let juliaup_dir;
   const arch3 = process.arch;
   const tool_name = "juliaup";
@@ -27880,7 +27916,9 @@ async function ensure_juliaup_is_installed() {
   } else {
     info(`Using existing tool-cached version of Juliaup: ${juliaup_dir}`);
   }
-  await addPath(juliaup_dir);
+  if (add_to_path) {
+    await addPath(juliaup_dir);
+  }
   const info2 = {
     juliaup_dir
   };
@@ -27946,11 +27984,19 @@ async function _construct_juliaup_tarball_download_url(juliaup_version) {
 async function main_function_run_me() {
   get_juliaup_channel_input();
   get_juliaup_version_input();
+  get_add_to_path_input();
   const info2 = await ensure_juliaup_is_installed();
   await print_debugging_juliaup_path(info2);
   await install_desired_juliaup_channel(info2);
+  set_action_outputs(info2);
   await print_debugging_julialauncher_path(info2);
   return;
+}
+function set_action_outputs(info2) {
+  const juliaup = get_juliaup(info2);
+  const julialauncher = get_julialauncher(info2);
+  setOutput("juliaup-path", juliaup);
+  setOutput("julialauncher-path", julialauncher);
 }
 async function print_debugging_juliaup_path(info2) {
   const juliaup = get_juliaup(info2);

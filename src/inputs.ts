@@ -43,6 +43,11 @@ export function get_github_token_input() {
     return trimmed_input
 }
 
+export function get_add_to_path_input() {
+    const input_name = 'add-to-path'
+    return core.getBooleanInput(input_name)
+}
+
 export function isNonEmptyString(str: string) {
     const result = str && str.length > 0;
     return result
