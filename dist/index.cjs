@@ -27910,6 +27910,26 @@ function _getGlobal(key, defaultValue) {
 // src/juliaup.ts
 var import_async_retry = __toESM(require_lib2(), 1);
 var import_semver = __toESM(require_semver2(), 1);
+var known_non_semver_juliaup_release_names_excludelist = /* @__PURE__ */ new Set([
+  "v1.0.39.0",
+  "v1.0.40.0",
+  "v1.0.41.0",
+  "v1.0.42.0",
+  "v1.0.43.0",
+  "v1.0.44.0",
+  "v1.0.45.0",
+  "v1.0.46.0",
+  "v1.0.48.0",
+  "v1.0.49.0",
+  "v1.0.50.0",
+  "v1.0.51.0",
+  "v1.0.53.0",
+  "v1.0.54.0",
+  "v1.0.55.0",
+  "v1.0.56.0",
+  "v1.0.57.0",
+  "v1.0.58.0"
+]);
 async function ensure_juliaup_is_installed() {
   const juliaup_version = await _decide_juliaup_version_from_input();
   let juliaup_dir;
@@ -27956,7 +27976,7 @@ async function _get_stable_juliaup_releases() {
     owner: "JuliaLang",
     repo: "juliaup"
   });
-  const stable_releases = all_releases.filter((x) => !x.prerelease);
+  const stable_releases = all_releases.filter((x) => !x.prerelease).filter((x) => !x.name || !known_non_semver_juliaup_release_names_excludelist.has(x.name));
   for (const rel of stable_releases) {
     if (!import_semver.default.parse(rel.name)) {
       error(`Could not parse release as semver version: ${rel.name}`);
