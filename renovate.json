@@ -1,5 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-  "rebaseWhen": "conflicted"
+  "osvVulnerabilityAlerts": true,
+  "rebaseWhen": "conflicted",
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "vulnerabilityFixStrategy": "lowest"
+  }
 }
