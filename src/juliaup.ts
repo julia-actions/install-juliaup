@@ -12,6 +12,27 @@ import semver from 'semver'
 import * as inputs from './inputs.js'
 import * as platform from './platform.js'
 
+const known_non_semver_juliaup_release_names_excludelist = new Set([
+    'v1.0.39.0',
+    'v1.0.40.0',
+    'v1.0.41.0',
+    'v1.0.42.0',
+    'v1.0.43.0',
+    'v1.0.44.0',
+    'v1.0.45.0',
+    'v1.0.46.0',
+    'v1.0.48.0',
+    'v1.0.49.0',
+    'v1.0.50.0',
+    'v1.0.51.0',
+    'v1.0.53.0',
+    'v1.0.54.0',
+    'v1.0.55.0',
+    'v1.0.56.0',
+    'v1.0.57.0',
+    'v1.0.58.0',
+])
+
 export async function ensure_juliaup_is_installed() {
     // 1. Determine which version of Juliaup to use.
     const juliaup_version = await _decide_juliaup_version_from_input()
@@ -82,7 +103,9 @@ async function _get_stable_juliaup_releases() {
     })
 
     // We need to exclude pre-releases:
-    const stable_releases = all_releases.filter(x => !x.prerelease)
+    const stable_releases = all_releases
+        .filter(x => !x.prerelease)
+        .filter(x => !x.name || !known_non_semver_juliaup_release_names_excludelist.has(x.name))
 
     // Exclude any release that we can't parse as a semver-formatted version number
     for (const rel of stable_releases) {

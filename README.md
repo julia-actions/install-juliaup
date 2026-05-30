@@ -1,6 +1,6 @@
 # `install-juliaup`
 
-GitHub Action to install `juliaup`.
+This is a GitHub Action that installs the [Julia programming language](https://julialang.org/) (using [Juliaup](https://github.com/JuliaLang/juliaup), a Julia installer and version manager) for use in your CI jobs.
 
 When you use this action, it will do three things:
 
