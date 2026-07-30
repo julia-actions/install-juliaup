@@ -40,7 +40,7 @@ export default [
     },
     ...jsonc.configs['flat/recommended-with-jsonc'],
     {
-        files: ['package.json', 'package-lock.json', 'renovate.json', 'tsconfig.json'],
+        files: ['package.json', 'package-lock.json', 'renovate.jsonc', 'tsconfig.json'],
         plugins: {
             prettier
         },
