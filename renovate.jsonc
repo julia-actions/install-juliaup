@@ -8,6 +8,6 @@
   // https://docs.renovatebot.com/key-concepts/minimum-release-age/#what-happens-to-security-updates
   "vulnerabilityAlerts": {
     "labels": ["security"],
-    "vulnerabilityFixStrategy": "lowest"
-  }
+    "vulnerabilityFixStrategy": "lowest",
+  },
 }
