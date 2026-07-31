@@ -90,9 +90,11 @@ When the `install-juliaup` action runs, it adds `juliaup` to the PATH. Therefore
 - run: juliaup status
 ```
 
-## Using Dependabot version updates to keep your GitHub Actions up to date
+## Keeping your GitHub Actions up to date
 
-We highly recommend that you set up Dependabot version updates on your repo to keep your GitHub Actions up to date.
+We highly recommend that you set up a tool to keep your GitHub Actions up to date.
+
+One such tool is Dependabot, although you could use a different tool if you want.
 
 To set up Dependabot version updates, create a file named `.github/dependabot.yml` in your repo with the following contents:
 
