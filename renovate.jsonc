@@ -4,6 +4,10 @@
   "minimumReleaseAge": "7 days",
   "osvVulnerabilityAlerts": true,
   "rebaseWhen": "conflicted",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+
   // Security updates bypass minimumReleaseAge, so vulnerability PRs stay immediate:
   // https://docs.renovatebot.com/key-concepts/minimum-release-age/#what-happens-to-security-updates
   "vulnerabilityAlerts": {
