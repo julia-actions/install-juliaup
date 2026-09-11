@@ -5,7 +5,7 @@
   "osvVulnerabilityAlerts": true,
   "rebaseWhen": "conflicted",
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": true,
   },
 
   // Security updates bypass minimumReleaseAge, so vulnerability PRs stay immediate:
