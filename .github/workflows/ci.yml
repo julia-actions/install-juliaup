@@ -254,3 +254,49 @@ jobs:
       - run: git --no-pager status
       - run: git --no-pager diff
       - run: julia ./bin/check_uncommitted_changes.jl
+  check-npm-audit:
+    # This job is intentionally NOT a dependency of `finalize`
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      ### Check out the repo:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      ### Install mise-en-place
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+      ### Install NodeJS (by using mise-en-place)
+      - run: make mise-install
+      ### Run the main commands for this job:
+      - run: npm ci
+      - run: npm audit
+        # By default, `npm audit` will exit with non-zero exit code
+        # if any vulnerabilities are found
+  check-npm-audit-fix:
+    # This job is intentionally NOT a dependency of `finalize`
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      ### Check out the repo:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      ### Install mise-en-place
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+      ### Install NodeJS (by using mise-en-place)
+      - run: make mise-install
+      ### Run the main commands for this job:
+      - run: npm ci
+      - run: npm audit fix
+        continue-on-error: true
+      ### Make sure there are no uncommited changes
+      - uses: julia-actions/setup-julia@fa02766e078afaaf09b14210362cee14137e6a32 # v3.0.2
+        with:
+          version: '1'
+      - run: git --no-pager status
+      - run: git --no-pager diff
+      - run: julia ./bin/check_uncommitted_changes.jl
