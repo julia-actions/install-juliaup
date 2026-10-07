@@ -30,16 +30,24 @@ function get_expected_platform()
     return platform
 end
 
+function get_expected_depot_root()
+    depot = get(ENV, "JULIAUP_DEPOT_PATH", "")
+    if isempty(depot)
+        return joinpath(homedir(), ".julia")
+    end
+    return depot
+end
+
 @static if Sys.isapple()
     function get_expected_paths(; EXPECTED_VERSION)
         expected_exename = get_expected_exename()
         expected_platform = get_expected_platform()
         expected_version_vn = VersionNumber(EXPECTED_VERSION)
         expected_version_majmin_str = "$(expected_version_vn.major).$(expected_version_vn.minor)"
-    
+        depot_root = get_expected_depot_root()
+
         expected_path1 = joinpath(
-            homedir(),
-            ".julia",
+            depot_root,
             "juliaup",
             "julia-$(EXPECTED_VERSION)+0.$(expected_platform)",
             "bin",
@@ -47,8 +55,7 @@ end
         )
         # expected_path2 is possible after https://github.com/JuliaLang/juliaup/pull/1320
         expected_path2 = joinpath(
-            homedir(),
-            ".julia",
+            depot_root,
             "juliaup",
             "julia-$(EXPECTED_VERSION)+0.$(expected_platform)",
             "Julia-$(expected_version_majmin_str).app",
@@ -66,10 +73,10 @@ else
     function get_expected_path(; EXPECTED_VERSION)
         expected_exename = get_expected_exename()
         expected_platform = get_expected_platform()
+        depot_root = get_expected_depot_root()
 
         expected_path = joinpath(
-            homedir(),
-            ".julia",
+            depot_root,
             "juliaup",
             "julia-$(EXPECTED_VERSION)+0.$(expected_platform)",
             "bin",
