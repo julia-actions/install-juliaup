@@ -22,7 +22,7 @@
     ".": "./dist/index.cjs"
   },
   "engines": {
-    "node": ">=24.0.0 <25.0.0"
+    "node": ">=24.0.0 <27.0.0"
   },
   "scripts": {
     "build": "tsc",
@@ -42,7 +42,7 @@
     "@eslint-community/eslint-plugin-eslint-comments": "^4.8.1",
     "@eslint/js": "^10.0.0",
     "@types/async-retry": "^1.4.8",
-    "@types/node": "^24.19.2",
+    "@types/node": "^26.0.0",
     "@types/semver": "^7.7.1",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
