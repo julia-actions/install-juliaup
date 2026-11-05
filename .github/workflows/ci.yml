@@ -18,11 +18,12 @@ jobs:
     if: always() # this line is important to keep the `finalize` job from being marked as skipped; do not change or delete this line
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: [build, checked-in-files, example, lint-check, make-targets, stalecheck-npm-install]
+    needs: [build, checked-in-files, check-node-versions, example, lint-check, make-targets, stalecheck-npm-install]
     steps:
       - run: |
           echo build: ${{ needs.build.result }}
           echo checked-in-files: ${{ needs.checked-in-files.result }}
+          echo check-node-versions: ${{ needs.check-node-versions.result }}
           echo example: ${{ needs.example.result }}
           echo lint-check: ${{ needs.lint-check.result }}
           echo make-targets: ${{ needs.make-targets.result }}
@@ -33,6 +34,7 @@ jobs:
         if: |
           (needs.build.result != 'success') ||
           (needs.checked-in-files.result != 'success') ||
+          (needs.check-node-versions.result != 'success') ||
           (needs.example.result != 'success') ||
           (needs.lint-check.result != 'success') ||
           (needs.make-targets.result != 'success') ||
@@ -113,6 +115,17 @@ jobs:
       - run: git --no-pager status
       - run: git --no-pager diff
       - run: julia ./bin/check_uncommitted_changes.jl
+  check-node-versions:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: julia-actions/setup-julia@da908477b5db94c10ffce8cfea9f2b3b9d5db687 # v3.0.3
+        with:
+          version: '1'
+      - run: julia ./bin/check_node_versions.jl
   example:
     timeout-minutes: 30
     runs-on: ${{ matrix.os }}
