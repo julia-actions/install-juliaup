@@ -133,8 +133,8 @@ jobs:
       fail-fast: false
       matrix:
         channel:
-          - '1.9.4'
-          - '1.10.2'
+          - '1.10.13'
+          - '1.13.4'
         os:
           - ubuntu-latest
           - windows-latest
